@@ -1,6 +1,19 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
+function buildImageWrapper(imageCol) {
+  if (!imageCol) return null;
+  const wrapper = document.createElement('div');
+  wrapper.className = 'cards-insights-image';
+  const img = (imageCol.querySelector('picture') || imageCol).querySelector('img');
+  if (img && img.src) {
+    const optimized = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
+    moveInstrumentation(img, optimized.querySelector('img'));
+    wrapper.append(optimized);
+  }
+  return wrapper;
+}
+
 export default function decorate(block) {
   const cards = [...block.children];
   block.textContent = '';
@@ -14,31 +27,8 @@ export default function decorate(block) {
     moveInstrumentation(row, card);
 
     const cols = [...row.children];
-    const imageCol = cols[0];
+    const imageWrapper = buildImageWrapper(cols[0]);
     const bodyCol = cols[1];
-
-    // Build image wrapper
-    let imageWrapper;
-    if (imageCol) {
-      imageWrapper = document.createElement('div');
-      imageWrapper.className = 'cards-insights-image';
-      const pic = imageCol.querySelector('picture');
-      if (pic) {
-        const img = pic.querySelector('img');
-        if (img) {
-          const optimized = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
-          moveInstrumentation(img, optimized.querySelector('img'));
-          imageWrapper.append(optimized);
-        }
-      } else {
-        const img = imageCol.querySelector('img');
-        if (img) {
-          const optimized = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
-          moveInstrumentation(img, optimized.querySelector('img'));
-          imageWrapper.append(optimized);
-        }
-      }
-    }
 
     // Build card body and extract category
     let categoryEl;

@@ -430,7 +430,11 @@ async function loadLazy(doc) {
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  loadFonts();
+
+  // On desktop, load fonts now; on mobile, defer to loadDelayed to avoid blocking LCP
+  if (window.innerWidth >= 768 || sessionStorage.getItem('fonts-loaded')) {
+    loadFonts();
+  }
 }
 
 /**
@@ -438,6 +442,11 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
+  // On mobile, fonts were deferred from loadLazy — load them now (after LCP)
+  if (window.innerWidth < 768 && !sessionStorage.getItem('fonts-loaded')) {
+    loadFonts();
+  }
+
   // eslint-disable-next-line import/no-cycle
   const importDelayed = () => import('./delayed.js');
 

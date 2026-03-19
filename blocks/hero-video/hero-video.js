@@ -63,12 +63,19 @@ export default function decorate(block) {
   }
 
   // No-image fallback
-  const img = imageRow?.querySelector('img, picture');
+  const img = imageRow?.querySelector('img');
   if (!img) {
     block.classList.add('no-image');
     return;
   }
 
-  // Load Brightcove background video on top of poster image
-  loadBackgroundVideo(imageRow.querySelector('div') || imageRow);
+  // Boost LCP: make the hero poster image high-priority
+  img.setAttribute('fetchpriority', 'high');
+  img.setAttribute('loading', 'eager');
+
+  // Skip video on mobile — autoplay is usually blocked and it adds ~2s to critical path
+  const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+  if (isDesktop) {
+    loadBackgroundVideo(imageRow.querySelector('div') || imageRow);
+  }
 }
