@@ -1,0 +1,46 @@
+/* quote-dark — full-bleed dark-section pullquote with background image */
+
+.quote-dark blockquote {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+@media (width >= 768px) {
+  .quote-dark blockquote {
+    padding: 100px 40px;
+  }
+}
+
+/* Decorative open-quote mark */
+.quote-dark .quote-dark-icon {
+  font-family: var(--heading-font-family);
+  font-size: 120px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 0;
+  padding: 60px 0 0 10px;
+  margin: 0 0 25px;
+}
+
+/* Quotation text */
+.quote-dark .quote-dark-quotation {
+  font-family: var(--heading-font-family);
+  font-size: 34px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.235;
+  padding: 0 15px 25px;
+  margin: 0;
+}
+
+/* Attribution */
+.quote-dark .quote-dark-attribution {
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.77;
+  padding: 0 15px 25px;
+  margin: 0;
+}

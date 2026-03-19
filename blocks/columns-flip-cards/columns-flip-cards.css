@@ -1,0 +1,251 @@
+/* columns-flip-cards — "Dedicated Focus" flip cards section */
+
+.columns-flip-cards > div {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* === Text column (left) === */
+.columns-flip-cards .flip-cards-text-col {
+  order: 1;
+}
+
+.columns-flip-cards .flip-cards-text-col h2 {
+  font-family: var(--heading-font-family);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.125;
+  color: #000;
+  margin: 0 0 20px;
+}
+
+.columns-flip-cards .flip-cards-text-col > p {
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.77;
+  color: #000;
+  margin: 0 0 24px;
+}
+
+/* CTA pill button */
+.columns-flip-cards .flip-cards-cta {
+  margin-bottom: 0;
+}
+
+.columns-flip-cards .flip-cards-cta a {
+  display: inline-block;
+  font-family: var(--heading-font-family);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.68px;
+  color: var(--text-color);
+  text-decoration: none;
+  border: 2px solid var(--brand-primary, #1e9bd7);
+  border-radius: 24px;
+  padding: 0 60px;
+  height: 40px;
+  line-height: 38px;
+}
+
+.columns-flip-cards .flip-cards-cta a:hover {
+  background-color: var(--brand-primary, #1e9bd7);
+  color: #fff;
+}
+
+/* === Cards column (right) === */
+.columns-flip-cards .flip-cards-cards-col {
+  order: 0;
+}
+
+.columns-flip-cards .flip-cards-row {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  perspective: 1000px;
+}
+
+/* --- Individual card wrapper --- */
+.columns-flip-cards .flip-card-wrapper {
+  position: relative;
+  width: 100%;
+  height: 405px;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 1s ease-in;
+}
+
+.columns-flip-cards .flip-card-wrapper.is-flipped {
+  transform: rotateY(180deg);
+}
+
+/* --- Shared face styles --- */
+.columns-flip-cards .flip-card-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border: 1px solid #c1c1c1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* --- Front face --- */
+.columns-flip-cards .flip-card-front {
+  background: transparent;
+  padding: 0 20px 10px;
+  justify-content: center;
+  text-align: center;
+}
+
+.columns-flip-cards .flip-card-icon {
+  margin-bottom: 16px;
+}
+
+.columns-flip-cards .flip-card-icon img {
+  width: 80px;
+  height: 80px;
+  display: block;
+}
+
+.columns-flip-cards .flip-card-title {
+  font-family: var(--body-font-family);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #000;
+  margin: 0 0 20px;
+}
+
+/* --- Back face --- */
+.columns-flip-cards .flip-card-back {
+  background: #000;
+  padding: 20px 20px 10px;
+  justify-content: center;
+  text-align: center;
+  transform: rotateY(180deg);
+}
+
+.columns-flip-cards .flip-card-desc {
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: #fff;
+  margin: 0 0 20px;
+}
+
+/* --- Trigger buttons (+ and ×) --- */
+.columns-flip-cards .flip-card-trigger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+}
+
+/* Plus icon (front) */
+.columns-flip-cards .flip-open-icon {
+  display: block;
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.columns-flip-cards .flip-open-icon::before,
+.columns-flip-cards .flip-open-icon::after {
+  content: '';
+  position: absolute;
+  background: var(--brand-primary, #1e9bd7);
+}
+
+.columns-flip-cards .flip-open-icon::before {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+.columns-flip-cards .flip-open-icon::after {
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+/* Close icon (back) */
+.columns-flip-cards .flip-close-icon {
+  display: block;
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.columns-flip-cards .flip-close-icon::before,
+.columns-flip-cards .flip-close-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--brand-primary, #1e9bd7);
+}
+
+.columns-flip-cards .flip-close-icon::before {
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.columns-flip-cards .flip-close-icon::after {
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* === Desktop layout (≥ 768px) === */
+@media (width >= 768px) {
+  .columns-flip-cards > div {
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .columns-flip-cards .flip-cards-text-col {
+    flex: 0 0 41.667%;
+    order: 0;
+  }
+
+  .columns-flip-cards .flip-cards-cards-col {
+    flex: 0 0 calc(58.333% - 30px);
+    order: 1;
+  }
+
+  .columns-flip-cards .flip-cards-text-col h2 {
+    font-size: 45px;
+  }
+
+  .columns-flip-cards .flip-cards-text-col > p {
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+
+  .columns-flip-cards .flip-cards-row {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .columns-flip-cards .flip-card-wrapper {
+    width: 304px;
+  }
+}

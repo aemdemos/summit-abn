@@ -1,0 +1,31 @@
+{
+  "variantName": "cards-insights",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-03-18T12:26:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.alliancebernstein.com/corporate/en/home.html",
+    "originPage": "corporate homepage",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "article-insights",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "image + category + title + date + author + description",
+    "buttonCount": 0,
+    "imageCount": 3
+  },
+  "reuseGuidance": {
+    "suitableFor": ["insight article listings", "blog post grids", "featured content cards"],
+    "notSuitableFor": ["product cards", "team member cards", "icon-only cards"]
+  },
+  "usage": {
+    "pagesUsing": ["content/corporate/en/home"],
+    "reuseCount": 1,
+    "lastUsed": "2026-03-18T12:26:00.000Z"
+  }
+}

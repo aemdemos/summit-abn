@@ -1489,12 +1489,12 @@ EDS uses two main breakpoints in `styles/styles.css`:
 
 Decision logic for `edsMapping.desktopBreakpoint` (the value to use in all `@media` rules in `styles/styles.css` and block CSS):
 
-1. **If the site's primary desktop breakpoint is 768px** → set `desktopBreakpoint` to `900px`. The 132px difference is negligible — EDS's 900px captures the same intent.
-2. **If the site's primary desktop breakpoint is 900px–1024px** → set `desktopBreakpoint` to the site's value. It's close enough to EDS default to replace it directly.
+1. **Always use the site's actual primary desktop breakpoint value.** If the site uses `768px` with the highest media query count, set `desktopBreakpoint` to `768px`. Do NOT remap to EDS's default `900px` — the migrated site must respect the source site's responsive behavior, and introducing a breakpoint that doesn't exist on the source site will cause layout mismatches. The EDS 900px default is only for greenfield projects, not migrations.
+2. **If the site's primary desktop breakpoint is 900px–1024px** → set `desktopBreakpoint` to the site's value directly.
 3. **If the site's primary desktop breakpoint is >1024px** → this is probably a "wide" breakpoint, not desktop. Look for a lower breakpoint (tablet) that serves as the real mobile/desktop split.
-4. **If the site's primary desktop breakpoint is <768px** (e.g., 600px) → set `desktopBreakpoint` to `900px` and note the discrepancy.
+4. **If the site's primary desktop breakpoint is <600px** → set `desktopBreakpoint` to the site's value and note that it's unusually low.
 
-**IMPORTANT:** `desktopBreakpoint` is the **CSS-ready value** — the exact pixel value to use in `@media (width >= Xpx)` throughout the project. It is NOT the raw site value. The raw site value is stored separately in `siteRawDesktopBreakpoint` for reference only. Every `@media` rule in `styles/styles.css` and in block CSS files MUST use `desktopBreakpoint`, never `siteRawDesktopBreakpoint`.
+**IMPORTANT:** `desktopBreakpoint` is the **CSS-ready value** — the exact pixel value to use in `@media (width >= Xpx)` throughout the project. For migrations, this MUST be the source site's actual breakpoint value (e.g., `768px` if that's what the site uses). `siteRawDesktopBreakpoint` will be the same value. Every `@media` rule in `styles/styles.css` and in block CSS files MUST use `desktopBreakpoint`.
 
 | Breakpoint range | Typical purpose | EDS mapping |
 |-----------------|----------------|-------------|
@@ -1709,7 +1709,7 @@ For each section's `innerContainers`, look at the `maxWidth` property:
 
 **Decision logic for `contentMaxWidth`:**
 
-1. Collect all unique `maxWidth` values from the innermost constraining container of each section (the first `innerContainer` in each section's array, or the section itself if it has `maxWidth`).
+1. Collect all unique `maxWidth` values from the **deepest** (innermost) constraining container of each section — that is, the **last** `innerContainer` entry in each section's array that has a non-`none` `maxWidth`, or the section itself if it has `maxWidth`. Do NOT use the first/outermost container — sites often have a full-bleed wrapper (e.g., `max-width: 1920px`) outside the real content container (e.g., `max-width: 1176px`). The outermost wrapper is a page-level cap, not the content constraint. When multiple containers are nested, the innermost one with an explicit `maxWidth` is the one that actually constrains text and card content.
 2. If the **majority** of sections share the same `maxWidth` → use that as `contentMaxWidth`.
 3. **If the shared value is a percentage** (e.g., `85%`): set `contentMaxWidth` to the percentage string (e.g., `"85%"`), AND record `contentMaxWidthPx` as the computed pixel equivalent at the measured viewport. Both go into `layout.json`.
 4. **If the shared value is a pixel value** (e.g., `1200px`): set `contentMaxWidth` to that value. `contentMaxWidthPx` is the same value.
