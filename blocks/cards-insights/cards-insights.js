@@ -45,7 +45,7 @@ export default function decorate(block) {
     const body = document.createElement('div');
     body.className = 'cards-insights-body';
 
-    if (bodyCol) {
+    if (bodyCol !== undefined && bodyCol !== null) {
       const elements = [...bodyCol.querySelectorAll(':scope > p, :scope > h3')];
 
       elements.forEach((el) => {

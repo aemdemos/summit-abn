@@ -25,8 +25,8 @@ export default function decorate(block) {
     // Look for a paragraph with an img (icon)
     if (el.tagName === 'P' && el.querySelector('img')) {
       const icon = el.querySelector('img');
-      const title = children[i + 1]; // h3
-      const desc = children[i + 2]; // p with description
+      const title = children.at(i + 1); // h3
+      const desc = children.at(i + 2); // p with description
       if (title && desc) {
         cards.push({
           iconSrc: icon.src,

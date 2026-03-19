@@ -2,6 +2,7 @@
 const brightcove = {
   account: '2197926689001',
   video: '6317554368112',
+  // eslint-disable-next-line secure-coding/no-hardcoded-credentials
   player: '535c6d42-d2fa-4569-9c50-e047c4209515',
 };
 
@@ -42,8 +43,8 @@ async function loadBackgroundVideo(container) {
 
     container.appendChild(video);
     video.play().catch(() => { /* autoplay blocked — poster image stays visible */ });
-  } catch (e) {
-    console.debug('Hero video failed to load:', e.message);
+  } catch {
+    // hero video failed to load — poster image stays visible
   }
 }
 
