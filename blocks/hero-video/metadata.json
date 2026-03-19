@@ -1,0 +1,31 @@
+{
+  "variantName": "hero-video",
+  "baseBlock": "hero",
+  "version": "1.0.0",
+  "created": "2026-03-18T12:26:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.alliancebernstein.com/corporate/en/home.html",
+    "originPage": "corporate homepage",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "spacious",
+    "purpose": "homepage-hero",
+    "imagePattern": "video-background"
+  },
+  "contentPattern": {
+    "structure": "video-background + heading + paragraph + CTA",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": ["homepage with video background", "landing pages with video hero"],
+    "notSuitableFor": ["text-only pages", "blog articles", "product detail pages"]
+  },
+  "usage": {
+    "pagesUsing": ["content/corporate/en/home"],
+    "reuseCount": 1,
+    "lastUsed": "2026-03-18T12:26:00.000Z"
+  }
+}

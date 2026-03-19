@@ -1,1 +1,39 @@
-/* stylelint-disable max-line-length */
+/* Fonts extracted from: https://www.alliancebernstein.com/corporate/en/home.html */
+
+/* Loading mechanism: self-hosted (woff format from AEM clientlibs) */
+
+/* Note: Original font files are hosted on the AllianceBernstein AEM instance. */
+
+/* For production, these font files need to be downloaded and hosted locally. */
+
+@font-face {
+  font-family: Klavika;
+  src: url('/fonts/Klavika-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Klavika;
+  src: url('/fonts/Klavika-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Theinhardt;
+  src: url('/fonts/Theinhardt-Light.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Theinhardt;
+  src: url('/fonts/Theinhardt-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

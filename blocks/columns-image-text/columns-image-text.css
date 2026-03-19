@@ -1,0 +1,155 @@
+/* columns-image-text — "Cultivating Diverse Perspectives" image + text */
+
+/*
+ * This block uses a "wide container" pattern that steps up with viewport
+ * breakpoints (576 → 768 → 1024 → 1176 → 1440px), wider than the normal
+ * section max-width (1176px) at large viewports.
+ */
+
+.columns-image-text > div {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* === Image column === */
+.columns-image-text > div > .columns-image-text-img-col {
+  order: 0;
+}
+
+.columns-image-text > div > .columns-image-text-img-col img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* === Text column === */
+.columns-image-text > div > div:not(.columns-image-text-img-col) {
+  order: 1;
+}
+
+.columns-image-text h2 {
+  font-family: var(--heading-font-family);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.125;
+  color: #000;
+  margin: 0;
+  padding: 0 0 20px;
+}
+
+.columns-image-text > div > div:not(.columns-image-text-img-col) > p {
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.77;
+  color: #262626;
+  margin: 0;
+  padding: 0 0 24px;
+}
+
+/* CTA pill button */
+.columns-image-text > div > div:not(.columns-image-text-img-col) > p:last-child {
+  padding-bottom: 0;
+}
+
+.columns-image-text > div > div:not(.columns-image-text-img-col) > p:last-child a {
+  display: inline-block;
+  font-family: var(--heading-font-family);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.68px;
+  color: var(--text-color);
+  text-decoration: none;
+  border: 2px solid var(--brand-primary, #1e9bd7);
+  border-radius: 24px;
+  padding: 0 60px;
+  height: 40px;
+  line-height: 38px;
+}
+
+.columns-image-text > div > div:not(.columns-image-text-img-col) > p:last-child a:hover {
+  background-color: var(--brand-primary, #1e9bd7);
+  color: #fff;
+}
+
+/* === Desktop layout — wide container breakout with stepped max-widths === */
+@media (width >= 576px) {
+  .columns-image-text {
+    width: 100vw;
+    max-width: 576px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media (width >= 768px) {
+  .columns-image-text {
+    max-width: 768px;
+  }
+
+  .columns-image-text > div {
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* Image column: 58.333% of the block width */
+  .columns-image-text > div > .columns-image-text-img-col {
+    flex: 0 0 58.333%;
+    overflow: hidden;
+  }
+
+  .columns-image-text > div > .columns-image-text-img-col img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Text column: remaining space, with internal padding */
+  .columns-image-text > div > div:not(.columns-image-text-img-col) {
+    flex: 1;
+    padding: 40px 30px;
+  }
+
+  .columns-image-text h2 {
+    font-size: 45px;
+  }
+
+  .columns-image-text > div > div:not(.columns-image-text-img-col) > p {
+    font-size: 18px;
+    padding-bottom: 30px;
+  }
+}
+
+@media (width >= 1024px) {
+  .columns-image-text {
+    max-width: 1024px;
+  }
+
+  .columns-image-text > div > div:not(.columns-image-text-img-col) {
+    padding: 40px;
+  }
+}
+
+@media (width >= 1176px) {
+  .columns-image-text {
+    max-width: 1176px;
+  }
+
+  .columns-image-text > div > div:not(.columns-image-text-img-col) {
+    padding: 40px 50px;
+  }
+}
+
+@media (width >= 1440px) {
+  .columns-image-text {
+    max-width: 1440px;
+  }
+
+  .columns-image-text > div > div:not(.columns-image-text-img-col) {
+    padding: 40px 60px;
+  }
+}

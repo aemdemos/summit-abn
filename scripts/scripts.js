@@ -391,6 +391,10 @@ async function loadThemeSpreadSheetConfig() {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+  const templateName = getMetadata('template');
+  if (templateName) {
+    loadCSS(`${window.hlx.codeBasePath}/templates/${toClassName(templateName)}/${toClassName(templateName)}.css`);
+  }
   // loadThemeSpreadSheetConfig(); uncomment if using theme spreadsheets
   if (getMetadata('breadcrumbs').toLowerCase() === 'true') {
     doc.body.dataset.breadcrumbs = true;
@@ -403,7 +407,7 @@ async function loadEager(doc) {
   }
 
   /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
-  if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
+  if (window.innerWidth >= 768 || sessionStorage.getItem('fonts-loaded')) {
     loadFonts();
   }
 }
@@ -426,7 +430,11 @@ async function loadLazy(doc) {
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  loadFonts();
+
+  // On desktop, load fonts now; on mobile, defer to loadDelayed to avoid blocking LCP
+  if (window.innerWidth >= 768 || sessionStorage.getItem('fonts-loaded')) {
+    loadFonts();
+  }
 }
 
 /**
@@ -434,6 +442,11 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
+  // On mobile, fonts were deferred from loadLazy — load them now (after LCP)
+  if (window.innerWidth < 768 && !sessionStorage.getItem('fonts-loaded')) {
+    loadFonts();
+  }
+
   // eslint-disable-next-line import/no-cycle
   const importDelayed = () => import('./delayed.js');
 
