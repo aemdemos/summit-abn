@@ -1,0 +1,31 @@
+{
+  "variantName": "columns-video-text",
+  "baseBlock": "columns",
+  "version": "1.0.0",
+  "created": "2026-03-18T12:26:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.alliancebernstein.com/corporate/en/home.html",
+    "originPage": "corporate homepage",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "video-text-layout",
+    "imagePattern": "video-left"
+  },
+  "contentPattern": {
+    "structure": "video + icon-card with heading + paragraph + CTA",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": ["video + text side-by-side sections", "media feature sections"],
+    "notSuitableFor": ["text-only columns", "image gallery layouts"]
+  },
+  "usage": {
+    "pagesUsing": ["content/corporate/en/home"],
+    "reuseCount": 1,
+    "lastUsed": "2026-03-18T12:26:00.000Z"
+  }
+}

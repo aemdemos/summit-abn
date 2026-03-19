@@ -1,0 +1,31 @@
+{
+  "variantName": "columns-flip-cards",
+  "baseBlock": "columns",
+  "version": "1.0.0",
+  "created": "2026-03-18T12:26:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.alliancebernstein.com/corporate/en/home.html",
+    "originPage": "corporate homepage",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "text-flipcards-layout",
+    "imagePattern": "icon"
+  },
+  "contentPattern": {
+    "structure": "heading + paragraph + CTA | flip-cards with icon + label",
+    "buttonCount": 1,
+    "imageCount": 2
+  },
+  "reuseGuidance": {
+    "suitableFor": ["text with interactive flip cards", "service overview sections"],
+    "notSuitableFor": ["simple text columns", "image-heavy layouts"]
+  },
+  "usage": {
+    "pagesUsing": ["content/corporate/en/home"],
+    "reuseCount": 1,
+    "lastUsed": "2026-03-18T12:26:00.000Z"
+  }
+}

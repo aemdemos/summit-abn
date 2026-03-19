@@ -1,0 +1,133 @@
+/* cards-promo — "Investor & Media" / "Careers" deep-dive cards */
+
+.cards-promo {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* === Individual card === */
+.cards-promo .promo-card {
+  position: relative;
+  padding-left: 15px;
+}
+
+/* Teal vertical line — 3px × 103px accent at top-left of each card */
+.cards-promo .promo-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 103px;
+  background-color: var(--brand-primary, #1e9bd7);
+}
+
+/* === Image column === */
+.cards-promo .promo-card-image {
+  line-height: 0;
+}
+
+.cards-promo .promo-card-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+/* === Body column === */
+.cards-promo .promo-card-body {
+  padding-top: 20px;
+}
+
+/* Eyebrow — category label */
+.cards-promo .promo-eyebrow {
+  font-family: var(--heading-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  line-height: 1.14;
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+/* Heading (h4) — wrapped in a link */
+.cards-promo h4 {
+  font-family: var(--body-font-family);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.18;
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+.cards-promo h4 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cards-promo h4 a:hover {
+  text-decoration: underline;
+}
+
+/* Body paragraph */
+.cards-promo .promo-card-body > p:not(.promo-eyebrow, .promo-cta) {
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.77;
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+/* CTA link */
+.cards-promo .promo-cta {
+  margin: 0;
+  padding: 25px 0 0;
+}
+
+.cards-promo .promo-cta a {
+  font-family: var(--heading-font-family);
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.68px;
+  color: var(--brand-primary, #1e9bd7);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Chevron arrow after CTA text (replaces FA angle-right SVG) */
+.cards-promo .promo-cta a::after {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid currentcolor;
+  border-right: 2px solid currentcolor;
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.cards-promo .promo-cta a:hover {
+  color: var(--brand-secondary, #007abb);
+}
+
+/* === Desktop layout (≥ 768px) — side-by-side cards === */
+@media (width >= 768px) {
+  .cards-promo {
+    flex-direction: row;
+    gap: 30px;
+  }
+
+  .cards-promo .promo-card {
+    flex: 1;
+  }
+}

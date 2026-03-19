@@ -1,0 +1,31 @@
+{
+  "variantName": "quote-dark",
+  "baseBlock": "quote",
+  "version": "1.0.0",
+  "created": "2026-03-18T12:26:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.alliancebernstein.com/corporate/en/home.html",
+    "originPage": "corporate homepage",
+    "blockPosition": "bottom"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "spacious",
+    "purpose": "executive-quote",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "large-quote-mark + quote-text + attribution",
+    "buttonCount": 0,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": ["executive quotes on dark backgrounds", "testimonial sections", "mission statement quotes"],
+    "notSuitableFor": ["light background quotes", "multi-quote carousels"]
+  },
+  "usage": {
+    "pagesUsing": ["content/corporate/en/home"],
+    "reuseCount": 1,
+    "lastUsed": "2026-03-18T12:26:00.000Z"
+  }
+}

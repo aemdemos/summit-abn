@@ -9,3 +9,271 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+
+/* === Design tokens extracted from: https://www.alliancebernstein.com/corporate/en/home.html === */
+
+/* === Extraction date: 2026-03-18 === */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* colors — source: color-palette.json */
+  --background-color: #fff;
+  --light-color: #f7f7f7;
+  --dark-color: #000;
+  --text-color: #262626;
+  --link-color: #1e9bd7;
+  --link-hover-color: #007abb;
+  --overlay-background-color: #f7f7f7;
+
+  /* fonts — source: typography.json */
+  --body-font-family: theinhardt, theinhardt-fallback, arial, helvetica, sans-serif;
+  --heading-font-family: klavika, klavika-fallback, arial, helvetica, sans-serif;
+  --fixed-font-family: menlo, consolas, "Liberation Mono", monospace;
+
+  /* body sizes (mobile-first) — source: typography.json */
+  --body-font-size-m: 19px;
+  --body-font-size-s: 16px;
+  --body-font-size-xs: 14px;
+
+  /* heading sizes (mobile-first) — source: typography.json responsive.mobileSizes */
+  --heading-font-size-xxl: 55px;
+  --heading-font-size-xl: 45px;
+  --heading-font-size-l: 24px;
+  --heading-font-size-m: 22px;
+  --heading-font-size-s: 19px;
+  --heading-font-size-xs: 16px;
+
+  /* nav heights — source: layout.json */
+  --nav-height: 186px;
+  --breadcrumbs-height: 34px;
+  --header-height: var(--nav-height);
+
+  /* site-specific tokens */
+  --brand-primary: #1e9bd7;
+  --brand-secondary: #007abb;
+  --border-color: #c4c4c4;
+  --border-radius: 0px;
+  --section-spacing: 0px;
+  --transition-duration: 0.3s;
+  --transition-easing: ease;
+}
+
+/* fallback fonts */
+@font-face {
+  font-family: Theinhardt-fallback;
+  size-adjust: 100%;
+  src: local('Arial');
+}
+
+@font-face {
+  font-family: Klavika-fallback;
+  size-adjust: 100%;
+  src: local('Arial');
+}
+
+/* Responsive adjustments — source: breakpoints.json, typography.json */
+@media (width >= 768px) {
+  :root {
+    --heading-font-size-xxl: 92px;
+    --heading-font-size-l: 30px;
+  }
+}
+
+body {
+  display: none;
+  margin: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  line-height: 1.32;
+}
+
+body.appear {
+  display: block;
+}
+
+header {
+  height: var(--header-height);
+}
+
+header .header,
+footer .footer {
+  visibility: hidden;
+}
+
+header .header[data-block-status="loaded"],
+footer .footer[data-block-status="loaded"] {
+  visibility: visible;
+}
+
+@media (width >= 768px) {
+  body[data-breadcrumbs] {
+    --header-height: calc(var(--nav-height) + var(--breadcrumbs-height));
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  line-height: 1.125;
+  scroll-margin: 40px;
+}
+
+h1 {
+  font-size: var(--heading-font-size-xxl);
+  line-height: 1.0;
+  letter-spacing: 1.68px;
+}
+
+h2 {
+  font-size: var(--heading-font-size-xl);
+  padding-bottom: 20px;
+}
+
+h3 { font-size: var(--heading-font-size-l); }
+h4 { font-size: var(--heading-font-size-m); }
+h5 { font-size: var(--heading-font-size-s); }
+h6 { font-size: var(--heading-font-size-xs); }
+
+p,
+dl,
+ol,
+ul,
+pre,
+blockquote {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+code,
+pre {
+  font-size: var(--body-font-size-s);
+}
+
+pre {
+  padding: 16px;
+  border-radius: 5px;
+  background-color: var(--light-color);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+main > div {
+  margin: var(--section-spacing) 30px;
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+/* links — source: color-palette.json, interactions.json */
+a:any-link {
+  color: var(--link-color);
+  text-decoration: none;
+  overflow-wrap: break-word;
+  transition: color var(--transition-duration, 0.2s) var(--transition-easing, ease);
+}
+
+a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+/* buttons — no real buttons detected on source (all transparent bg) */
+a.button:any-link {
+  color: var(--link-color);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+a.button:hover,
+a.button:focus {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+button {
+  font: inherit;
+  border: none;
+  background-color: transparent;
+  color: var(--link-color);
+  cursor: pointer;
+}
+
+button:hover,
+button:focus {
+  color: var(--link-hover-color);
+}
+
+button:disabled,
+button:disabled:hover {
+  color: var(--light-color);
+  cursor: unset;
+}
+
+main img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+}
+
+.icon {
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+}
+
+.icon img {
+  height: 100%;
+  width: 100%;
+}
+
+/* sections — full-bleed layout (source: layout.json, spacing.json) */
+main > .section {
+  margin: var(--section-spacing) 0;
+}
+
+main > .section > div {
+  max-width: 1176px;
+  margin: auto;
+  padding: 0 30px;
+}
+
+main > .section:first-of-type {
+  margin-top: 0;
+}
+
+/* section metadata */
+main .section.light,
+main .section.highlight {
+  background-color: var(--light-color);
+  margin: 0;
+  padding: var(--section-spacing) 0;
+}
+
+main .section.dark {
+  background-color: var(--dark-color);
+  color: #fff;
+  margin: 0;
+  padding: 30px 0;
+}
+
+/* focus styles — source: interactions.json */
+:focus-visible {
+  outline: 2px auto #007abb;
+  outline-offset: 0;
+}

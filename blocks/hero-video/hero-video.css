@@ -1,0 +1,154 @@
+/* hero-video block — full-bleed hero with background image and text overlay */
+
+/* Full-bleed container */
+.hero-video-container .hero-video-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+/* Hero block */
+.hero-video {
+  position: relative;
+  min-height: 400px;
+  overflow: hidden;
+}
+
+/* Row 1: Background image — absolute fill */
+.hero-video .hero-video-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-video .hero-video-background div {
+  height: 100%;
+}
+
+.hero-video .hero-video-background picture {
+  display: block;
+  height: 100%;
+}
+
+.hero-video .hero-video-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Background video — fills same area as poster image */
+.hero-video .hero-video-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Dark gradient overlay for text readability */
+.hero-video::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgb(0 0 0 / 65%) 0%,
+    rgb(0 0 0 / 45%) 40%,
+    rgb(0 0 0 / 0%) 65%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Row 2: Content overlay */
+.hero-video .hero-video-overlay {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 400px;
+  padding: 40px 24px;
+}
+
+/* Heading */
+.hero-video h1 {
+  color: #fff;
+  max-width: 600px;
+  margin: 0;
+}
+
+.hero-video h1 sup {
+  font-size: 0.55em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+/* Description paragraph (if present) */
+.hero-video .hero-video-overlay p:not(.button-container) {
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.685;
+  margin: 10px 0 0;
+  max-width: 520px;
+}
+
+/* CTA button container */
+.hero-video .hero-video-overlay > div:last-child {
+  margin: 24px 0 0;
+}
+
+/* CTA button */
+.hero-video .hero-video-overlay a {
+  display: inline-block;
+  font-family: var(--heading-font-family);
+  font-size: 12px;
+  font-weight: 500;
+  color: #fff;
+  background: transparent;
+  border: 2px solid var(--brand-primary, #1e9bd7);
+  border-radius: 24px;
+  padding: 0 60px;
+  height: 40px;
+  line-height: 38px;
+  text-transform: uppercase;
+  letter-spacing: 1.68px;
+  text-decoration: none;
+  text-align: center;
+  transition:
+    background-color var(--transition-duration) var(--transition-easing),
+    color var(--transition-duration) var(--transition-easing);
+}
+
+.hero-video .hero-video-overlay a:hover {
+  background-color: var(--brand-primary, #1e9bd7);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* No-image fallback */
+.hero-video.no-image {
+  background-color: var(--dark-color);
+}
+
+.hero-video.no-image::after {
+  display: none;
+}
+
+/* ---- Desktop (≥ 768px) ---- */
+@media (width >= 768px) {
+  .hero-video {
+    min-height: 648px;
+  }
+
+  .hero-video .hero-video-overlay {
+    min-height: 648px;
+    padding: 0 0 100px 125px;
+    max-width: 700px;
+  }
+
+  .hero-video .hero-video-overlay p:not(.button-container) {
+    font-size: 18px;
+  }
+}

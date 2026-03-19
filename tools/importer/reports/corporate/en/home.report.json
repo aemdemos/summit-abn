@@ -1,0 +1,33 @@
+{
+  "status": "success",
+  "url": "https://www.alliancebernstein.com/corporate/en/home.html",
+  "path": "corporate/en/home",
+  "timestamp": "2026-03-18T14:42:26.610Z",
+  "title": "AllianceBernstein | AB",
+  "template": "homepage",
+  "blocks": [
+    "hero-video",
+    "cards-insights",
+    "cards-insights",
+    "columns-video-text",
+    "columns-flip-cards",
+    "columns-flip-cards",
+    "columns-image-text",
+    "columns-image-text",
+    "columns-image-text",
+    "columns-image-text",
+    "columns-image-text",
+    "columns-image-text",
+    "columns-image-text",
+    "columns-image-text",
+    "columns-image-text",
+    "columns-image-text",
+    "columns-image-text",
+    "columns-news",
+    "columns-news",
+    "cards-promo",
+    "cards-promo",
+    "cards-promo",
+    "quote-dark"
+  ]
+}

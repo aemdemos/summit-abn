@@ -1,0 +1,119 @@
+/* Template: home — page-specific styling for AllianceBernstein homepage */
+
+/* === Section divider labels ===
+ * On the original site these are .abde-section-focus-header / .abde-section-focus-title
+ * — uppercase Klavika text with a teal underline, alternating right/left alignment.
+ * The wrapper spans the FULL viewport width (breaks out of max-width container).
+ * The title uses float to pin to the screen edge.
+ * border-bottom on the floated element extends from the screen edge through the text. */
+
+.columns-video-text-container > .default-content-wrapper {
+  max-width: none;
+  padding: 65px 0 0;
+  margin: 0;
+}
+
+.columns-video-text-container > .default-content-wrapper > p:first-child {
+  font-family: var(--heading-font-family);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: var(--text-color);
+  line-height: 1.32;
+  border-bottom: 3px solid #1cd8c0;
+  display: block;
+  padding-bottom: 5px;
+}
+
+/* Hide empty image paragraphs (Brightcove video placeholders) */
+.columns-video-text-container > .default-content-wrapper > p:has(img) {
+  display: none;
+}
+
+/* Alternating alignment: right (1st, 3rd) / left (2nd, 4th)
+ * Children alternate: divider(1), block(2), divider(3), block(4), ...
+ * So :nth-child(4n+1) = right, :nth-child(4n+3) = left
+ * Float pins the element to the screen edge; padding indents the text 50px. */
+.columns-video-text-container > .default-content-wrapper:nth-child(4n+1) > p:first-child {
+  float: right;
+  padding: 0 50px 5px 0;
+}
+
+.columns-video-text-container > .default-content-wrapper:nth-child(4n+3) > p:first-child {
+  float: left;
+  padding: 0 0 5px 50px;
+}
+
+/* Clear floats so subsequent content flows correctly */
+.columns-video-text-container > .default-content-wrapper::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+/* === Spacing between blocks and dividers ===
+ * Original site: abde-mb-xl (160px) spacer after each block,
+ * abde-mt-md (65px) on each divider row, abde-mb-sm (40px) spacer before each block.
+ * Total block→divider gap = 160 + 65 = 225px. Divider→block gap = 40px. */
+.columns-video-text-container > div:not(.default-content-wrapper) {
+  margin-bottom: 160px;
+}
+
+.columns-video-text-container > .default-content-wrapper + div:not(.default-content-wrapper) {
+  margin-top: 40px;
+}
+
+/* First divider: 160px spacer (abde-mb-xl after insights) + 65px own padding = 225px total.
+ * Use padding so it doesn't collapse with surrounding margins. */
+.columns-video-text-container > .default-content-wrapper:first-child {
+  padding-top: 225px;
+}
+
+/* Last divider ("Innovation") — only 40px below before the dark news section */
+.columns-video-text-container > .default-content-wrapper:last-child {
+  margin-bottom: 40px;
+}
+
+/* === Dark (News) section ===
+ * Original site uses abde-theme-bg-darkest with a background image covering
+ * the entire section. The "Innovation" divider label sits in the preceding
+ * section; this section only holds the columns-news block. */
+.section.dark.columns-news-container {
+  background-image: url('https://www.alliancebernstein.com/content/dam/corporate/corporate-images/Corporate_OurFirm_Interstitial_President_Onur_Desktop.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 80px 0;
+}
+
+/* Hide the empty background-image placeholder paragraph */
+.columns-news-container > .default-content-wrapper > p:has(img[src=""]),
+.columns-news-container > .default-content-wrapper > p:has(img:not([src])) {
+  display: none;
+}
+
+/* === Section-to-section spacing (lower page) ===
+ * Original: abde-mb-md (80px) after dark news, abde-mb-xl (160px) after cards-promo. */
+.section.cards-promo-container {
+  margin-top: 80px;
+  margin-bottom: 160px;
+}
+
+/* === Dark (Quote) section ===
+ * Full-bleed background image of a mountain road. */
+.section.dark.quote-dark-container {
+  background-image: url('https://www.alliancebernstein.com/content/dam/corporate/corporate-footer-images/BG-OurFirm-EndPageQuote-Road_Mountains.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 1030px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hide Terms of Use / ACCEPT / tracking-pixel default content in quote section */
+.quote-dark-container > .default-content-wrapper {
+  display: none;
+}
