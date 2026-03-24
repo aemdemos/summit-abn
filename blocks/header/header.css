@@ -88,12 +88,9 @@ a.header-contact-link:hover {
   width: auto;
 }
 
-.header-logo .header-logo-dark {
-  display: none;
-}
-
-.header-logo .header-logo-mobile {
-  display: none;
+.header-logo picture {
+  display: block;
+  line-height: 0;
 }
 
 /* ---- Navigation ---- */
@@ -750,12 +747,8 @@ a.article-card-title:hover {
   color: var(--link-color, #1e9bd7);
 }
 
-.header.is-open .header-logo .header-logo-white {
-  display: none;
-}
-
-.header.is-open .header-logo .header-logo-dark {
-  display: block;
+.header.is-open .header-logo img {
+  filter: brightness(0);
 }
 
 .header.is-open .header-site-selector-trigger {
@@ -822,19 +815,9 @@ a.article-card-title:hover {
     order: 1;
   }
 
-  .header-logo .header-logo-white,
-  .header-logo .header-logo-dark {
-    display: none;
-  }
-
-  .header-logo .header-logo-mobile {
-    display: block;
-    width: 45px;
-    height: 45px;
-  }
-
   .header-logo img {
-    height: auto;
+    height: 40px;
+    width: auto;
   }
 
   /* ---- Utility items: order after logo, pushed right ---- */
@@ -877,14 +860,8 @@ a.article-card-title:hover {
     background: #fff;
   }
 
-  /* In open state, keep desktop logos hidden, switch mobile logo to dark */
-  .header.is-open .header-logo .header-logo-white,
-  .header.is-open .header-logo .header-logo-dark {
-    display: none;
-  }
-
-  .header.is-open.header-mobile-open .header-logo .header-logo-mobile {
-    display: block;
+  /* In mobile open state, switch logo to dark */
+  .header.is-open.header-mobile-open .header-logo img {
     filter: brightness(0);
   }
 

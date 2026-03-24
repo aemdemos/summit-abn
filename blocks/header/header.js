@@ -43,11 +43,6 @@ function el(tag, attrs = {}, ...children) {
   return e;
 }
 
-function resolveNavPath(src) {
-  if (!src || src.startsWith('http') || src.startsWith('/')) return src;
-  return `/content/${src}`;
-}
-
 function closeAllPanels(header) {
   header.classList.remove('is-open');
   header.querySelectorAll('.header-megamenu-panel.is-open').forEach((p) => p.classList.remove('is-open'));
@@ -59,12 +54,13 @@ function closeAllPanels(header) {
 
 function buildUtilityBar(toolsSection) {
   const bar = el('div', { class: 'header-utility-bar' });
-  const contactLink = toolsSection.querySelector('.contact-link');
-  if (contactLink) {
+  // DA format: first <p><a> in tools section is the Contact Us link
+  const contactA = toolsSection.querySelector(':scope > p > a');
+  if (contactA) {
     const a = el('a', {
-      href: contactLink.getAttribute('href'),
+      href: contactA.getAttribute('href'),
       class: 'header-contact-link',
-    }, contactLink.textContent);
+    }, contactA.textContent);
     bar.append(a);
   }
 
@@ -79,39 +75,20 @@ function buildUtilityBar(toolsSection) {
 function buildLogo(logoSection) {
   const logoDiv = el('div', { class: 'header-logo' });
   const link = logoSection.querySelector('a');
-  const img = logoSection.querySelector('img');
-  if (link && img) {
+  const picture = logoSection.querySelector('picture');
+  if (link && picture) {
     const a = el('a', {
       href: link.getAttribute('href'),
       'aria-label': 'AllianceBernstein Home',
     });
-    const alt = img.getAttribute('alt') || 'AllianceBernstein';
-    const whiteImg = el('img', {
-      src: resolveNavPath(img.getAttribute('src')),
-      alt,
-      class: 'header-logo-white',
-      loading: 'eager',
-      width: '206',
-      height: '55',
-    });
-    const darkSrc = img.getAttribute('src').replace('white', 'dark');
-    const darkImg = el('img', {
-      src: resolveNavPath(darkSrc),
-      alt,
-      class: 'header-logo-dark',
-      loading: 'eager',
-      width: '206',
-      height: '55',
-    });
-    const mobileImg = el('img', {
-      src: 'https://www.alliancebernstein.com/content/dam/global/logos/ab-logo-rebrand.png',
-      alt,
-      class: 'header-logo-mobile',
-      loading: 'eager',
-      width: '45',
-      height: '45',
-    });
-    a.append(whiteImg, darkImg, mobileImg);
+    // Use the DA <picture> element directly — EDS resolves media URLs correctly
+    const img = picture.querySelector('img');
+    if (img) {
+      img.loading = 'eager';
+      img.removeAttribute('width');
+      img.removeAttribute('height');
+    }
+    a.append(picture);
     logoDiv.append(a);
   }
   return logoDiv;
@@ -127,7 +104,8 @@ function buildMegamenuNavLinks(li) {
       const link = subLi.querySelector('a');
       if (link) {
         navItem.append(el('a', { href: link.getAttribute('href') }, link.textContent));
-      } else if (subLi.classList.contains('section-heading')) {
+      } else {
+        // DA: text-only <li> items are section headings (e.g., "Current Insights", "Top Categories")
         navItem.classList.add('section-heading');
         navItem.textContent = subLi.textContent;
       }
@@ -138,92 +116,167 @@ function buildMegamenuNavLinks(li) {
   return left;
 }
 
-function buildMegamenuPromo(promo) {
+// Extract promo content from a nav <li> (content after the sub-<ul>)
+// DA format: optional <p> subtitle, <h4> heading, <p> description, <p><a> CTA, <p><picture> image
+function getPromoContent(li) {
+  const children = [...li.children];
+  const ulIndex = children.findIndex((c) => c.tagName === 'UL');
+  if (ulIndex < 0) return null;
+
+  const afterUl = children.slice(ulIndex + 1);
+  const h4 = afterUl.find((c) => c.tagName === 'H4');
+  if (!h4) return null;
+
+  const h4Index = afterUl.indexOf(h4);
+
+  // Content before h4 that's plain text (no link/picture) = subtitle
+  const subtitle = afterUl.slice(0, h4Index).find(
+    (c) => c.tagName === 'P' && !c.querySelector('picture') && !c.querySelector('a'),
+  );
+
+  const afterH4 = afterUl.slice(h4Index + 1);
+  const description = afterH4.find(
+    (c) => c.tagName === 'P' && !c.querySelector('picture') && !c.querySelector('a'),
+  );
+  const cta = afterH4.find(
+    (c) => c.tagName === 'P' && c.querySelector('a') && !c.querySelector('picture'),
+  );
+  const imageP = afterH4.find(
+    (c) => c.tagName === 'P' && c.querySelector('picture'),
+  );
+
+  return { subtitle, h4, description, cta, imageP };
+}
+
+function buildMegamenuPromo(promoData) {
   const promoEl = el('div', { class: 'header-megamenu-promo' });
-  const content = promo.querySelector('.megamenu-promo-content');
-  if (content) {
-    const promoContent = el('div', { class: 'header-megamenu-promo-content' });
-    const subtitle = content.querySelector('.megamenu-promo-subtitle');
-    if (subtitle) promoContent.append(el('span', { class: 'promo-subtitle' }, subtitle.textContent));
-    const heading = content.querySelector('h4');
-    if (heading) {
-      const headingLink = heading.querySelector('a');
-      if (headingLink) {
-        const h4 = el('h4');
-        h4.append(el('a', { href: headingLink.getAttribute('href') }, headingLink.textContent));
-        promoContent.append(h4);
-      } else {
-        promoContent.append(el('h4', {}, heading.textContent));
-      }
-    }
-    const desc = content.querySelector('p');
-    if (desc) promoContent.append(el('p', {}, desc.textContent));
-    const cta = content.querySelector(':scope > a');
-    if (cta) {
-      promoContent.append(el('a', {
-        href: cta.getAttribute('href'),
-        class: 'promo-cta',
-      }, cta.textContent));
-    }
-    promoEl.append(promoContent);
+  const promoContent = el('div', { class: 'header-megamenu-promo-content' });
+
+  if (promoData.subtitle) {
+    promoContent.append(el('span', { class: 'promo-subtitle' }, promoData.subtitle.textContent));
   }
-  const image = promo.querySelector('.megamenu-promo-image img');
-  if (image) {
+
+  if (promoData.h4) {
+    const headingLink = promoData.h4.querySelector('a');
+    if (headingLink) {
+      const h4 = el('h4');
+      h4.append(el('a', { href: headingLink.getAttribute('href') }, headingLink.textContent));
+      promoContent.append(h4);
+    } else {
+      promoContent.append(el('h4', {}, promoData.h4.textContent));
+    }
+  }
+
+  if (promoData.description) {
+    promoContent.append(el('p', {}, promoData.description.textContent));
+  }
+
+  if (promoData.cta) {
+    const ctaLink = promoData.cta.querySelector('a');
+    if (ctaLink) {
+      promoContent.append(el('a', {
+        href: ctaLink.getAttribute('href'),
+        class: 'promo-cta',
+      }, ctaLink.textContent));
+    }
+  }
+
+  promoEl.append(promoContent);
+
+  if (promoData.imageP) {
     const imgDiv = el('div', { class: 'header-megamenu-promo-image' });
-    imgDiv.append(el('img', {
-      src: resolveNavPath(image.getAttribute('src')),
-      alt: image.getAttribute('alt') || '',
-      loading: 'lazy',
-      width: '400',
-      height: '225',
-    }));
+    const picture = promoData.imageP.querySelector('picture');
+    if (picture) {
+      const img = picture.querySelector('img');
+      if (img) img.loading = 'lazy';
+      imgDiv.append(picture);
+    }
     promoEl.append(imgDiv);
   }
+
   return promoEl;
 }
 
-function buildMegamenuArticles(articles) {
-  const articlesEl = el('div', { class: 'header-megamenu-articles' });
-  articles.querySelectorAll('.megamenu-article-card').forEach((card) => {
-    const cardEl = el('div', { class: 'header-megamenu-article-card' });
-    const imgLink = card.querySelector(':scope > a');
-    if (imgLink) {
-      const img = imgLink.querySelector('img');
-      const imgWrap = el('a', {
-        href: imgLink.getAttribute('href'),
-        class: 'article-card-image',
-      });
-      if (img) {
-        imgWrap.append(el('img', {
-          src: resolveNavPath(img.getAttribute('src')),
-          alt: img.getAttribute('alt') || '',
-          loading: 'lazy',
-          width: '300',
-          height: '170',
-        }));
-      }
-      cardEl.append(imgWrap);
-    }
-    const meta = card.querySelector('.megamenu-article-meta');
-    if (meta) {
-      const metaEl = el('div', { class: 'article-card-meta' });
-      const cat = meta.querySelector('.megamenu-article-category');
-      if (cat) metaEl.append(el('span', { class: 'article-card-category' }, cat.textContent));
-      const titleLink = meta.querySelector('a');
+// Extract article cards from the Insights nav <li>
+// DA format: pairs of <p><a><picture> (linked image) + <p> metadata text
+function getArticleCards(li) {
+  const children = [...li.children];
+  const ulIndex = children.findIndex((c) => c.tagName === 'UL');
+  if (ulIndex < 0) return [];
+
+  const afterUl = children.slice(ulIndex + 1);
+  const cards = [];
+
+  for (let i = 0; i < afterUl.length - 1; i += 1) {
+    const imageP = afterUl[i];
+    const metaP = afterUl[i + 1];
+
+    if (imageP.tagName === 'P' && imageP.querySelector('a > picture') && metaP.tagName === 'P') {
+      const a = imageP.querySelector('a');
+      const picture = a.querySelector('picture');
+      const metaText = metaP.textContent;
+      const titleLink = metaP.querySelector('a');
+
+      let category = '';
+      let date = '';
+      let author = '';
+
       if (titleLink) {
-        metaEl.append(el('a', {
-          href: titleLink.getAttribute('href'),
-          class: 'article-card-title',
-        }, titleLink.textContent));
+        const titleStart = metaText.indexOf(titleLink.textContent);
+        category = metaText.substring(0, titleStart).trim();
+        const afterTitle = metaText.substring(titleStart + titleLink.textContent.length).trim();
+        // Parse "March 18, 2026 / 3 min read Matthew Bass"
+        const dateMatch = afterTitle.match(/^(.{0,80}\d+\s{0,3}min\s(?:read|watch))\s(.*)/);
+        if (dateMatch) {
+          date = dateMatch[1].trim();
+          author = dateMatch[2].trim();
+        } else {
+          date = afterTitle;
+        }
       }
-      const date = meta.querySelector('.megamenu-article-date');
-      if (date) metaEl.append(el('span', { class: 'article-card-date' }, date.textContent));
-      const author = meta.querySelector('.megamenu-article-author');
-      if (author) metaEl.append(el('span', { class: 'article-card-author' }, author.textContent));
-      cardEl.append(metaEl);
+
+      cards.push({
+        imageLink: a, picture, titleLink, category, date, author,
+      });
+      i += 1; // skip the meta <p>
     }
+  }
+
+  return cards;
+}
+
+function buildMegamenuArticles(cards) {
+  const articlesEl = el('div', { class: 'header-megamenu-articles' });
+
+  cards.forEach((card) => {
+    const cardEl = el('div', { class: 'header-megamenu-article-card' });
+
+    const imgWrap = el('a', {
+      href: card.imageLink.getAttribute('href'),
+      class: 'article-card-image',
+    });
+    if (card.picture) {
+      const img = card.picture.querySelector('img');
+      if (img) img.loading = 'lazy';
+      imgWrap.append(card.picture);
+    }
+    cardEl.append(imgWrap);
+
+    const metaEl = el('div', { class: 'article-card-meta' });
+    if (card.category) metaEl.append(el('span', { class: 'article-card-category' }, card.category));
+    if (card.titleLink) {
+      metaEl.append(el('a', {
+        href: card.titleLink.getAttribute('href'),
+        class: 'article-card-title',
+      }, card.titleLink.textContent));
+    }
+    if (card.date) metaEl.append(el('span', { class: 'article-card-date' }, card.date));
+    if (card.author) metaEl.append(el('span', { class: 'article-card-author' }, card.author));
+    cardEl.append(metaEl);
+
     articlesEl.append(cardEl);
   });
+
   return articlesEl;
 }
 
@@ -233,11 +286,15 @@ function buildMegamenuPanel(li) {
 
   const left = buildMegamenuNavLinks(li);
   const right = el('div', { class: 'header-megamenu-right' });
-  const promo = li.querySelector('.megamenu-promo');
-  const articles = li.querySelector('.megamenu-articles');
 
-  if (promo) right.append(buildMegamenuPromo(promo));
-  if (articles) right.append(buildMegamenuArticles(articles));
+  // Determine megamenu type by content after the sub-<ul>
+  const articleCards = getArticleCards(li);
+  if (articleCards.length > 0) {
+    right.append(buildMegamenuArticles(articleCards));
+  } else {
+    const promoData = getPromoContent(li);
+    if (promoData) right.append(buildMegamenuPromo(promoData));
+  }
 
   const closeBtn = el('button', {
     class: 'header-megamenu-close',
@@ -264,23 +321,22 @@ function buildNav(navSection, header) {
   if (!sourceUl) return { nav, panels };
 
   sourceUl.querySelectorAll(':scope > li').forEach((li) => {
-    const trigger = li.querySelector(':scope > a');
-    if (!trigger) return;
+    // DA: top-level link is inside <p><a> (not bare <a>)
+    const triggerA = li.querySelector(':scope > p > a') || li.querySelector(':scope > a');
+    if (!triggerA) return;
 
     const item = el('li', { class: 'header-nav-item' });
     const triggerBtn = el('button', {
       class: 'header-nav-trigger',
       'aria-expanded': 'false',
-    }, trigger.textContent);
+    }, triggerA.textContent);
 
     const panel = buildMegamenuPanel(li);
     panels.push(panel);
 
-    // Store panel reference on the item for mobile accordion
     item.dataset.panelIndex = String(panels.length - 1);
 
     triggerBtn.addEventListener('click', () => {
-      // On mobile, accordion behavior is handled by setupMobileAccordion
       const isMobile = window.matchMedia('(max-width: 1023px)').matches;
       if (isMobile) return;
 
@@ -321,7 +377,6 @@ function buildNav(navSection, header) {
   indicator.style.backgroundColor = 'var(--brand-primary, #1e9bd7)';
   nav.append(navList, indicator);
 
-  // Show indicator under first nav item by default (matches source behavior)
   requestAnimationFrame(() => {
     const firstTrigger = navList.querySelector('.header-nav-trigger');
     if (firstTrigger) {
@@ -337,6 +392,7 @@ function buildNav(navSection, header) {
 }
 
 function buildSiteSelector(toolsSection, header) {
+  // DA format: <div class="site-selector"> with nested divs containing h4+ul region pairs
   const ssSrc = toolsSection.querySelector('.site-selector');
   if (!ssSrc) return null;
 
@@ -349,51 +405,52 @@ function buildSiteSelector(toolsSection, header) {
   const leftContent = el('div', { class: 'ss-left' });
   const triggerInner = el('div', { class: 'site-selector-trigger-inner' });
 
-  const srcTrigger = ssSrc.querySelector('.site-selector-trigger');
-  const name = srcTrigger?.querySelector(':scope > span:first-child')?.textContent || 'AllianceBernstein';
-  const label = srcTrigger?.querySelector('.site-selector-label')?.textContent || 'Choose Your Site';
-
   triggerInner.append(
-    el('span', { class: 'site-selector-name' }, name),
+    el('span', { class: 'site-selector-name' }, 'AllianceBernstein'),
     el('span', { class: 'site-selector-globe' }, globeIcon()),
   );
 
-  const labelEl = el('span', { class: 'site-selector-label' }, label);
+  const labelEl = el('span', { class: 'site-selector-label' }, 'Choose Your Site');
   leftContent.append(triggerInner, labelEl);
   const iconEl = el('span', { class: 'site-selector-plus' }, plusIcon());
   box.append(leftContent, iconEl);
   trigger.append(box);
 
-  const panelSrc = ssSrc.querySelector('.site-selector-panel');
   const panel = el('div', { class: 'header-site-selector-panel' });
-  if (panelSrc) {
-    const heading = panelSrc.querySelector('h3');
+
+  // DA site-selector: two child divs — first is trigger area, second contains panel content
+  const panelSource = ssSrc.querySelector(':scope > div:nth-child(2) > div');
+  if (panelSource) {
     const titleBar = el('div', { class: 'site-selector-title-bar' });
     const titleBarInner = el('div', { class: 'site-selector-title-bar-inner' });
-    if (heading) titleBarInner.append(el('h3', {}, heading.textContent));
+    titleBarInner.append(el('h3', {}, 'Choose your site'));
     titleBar.append(titleBarInner);
     panel.append(titleBar);
 
     const panelInner = el('div', { class: 'site-selector-panel-inner' });
     const regionsDiv = el('div', { class: 'site-selector-regions' });
-    panelSrc.querySelectorAll('.site-selector-region').forEach((region, idx) => {
+
+    // Parse h4 + ul pairs as regions
+    const regionHeadings = panelSource.querySelectorAll('h4');
+    regionHeadings.forEach((h4, idx) => {
       const regionEl = el('div', { class: 'site-selector-region' });
       if (idx === 1) regionEl.classList.add('site-selector-region-apac');
       if (idx === 2) regionEl.classList.add('site-selector-region-europe');
-      const regionHeading = region.querySelector('h4');
-      if (regionHeading) regionEl.append(el('h4', {}, regionHeading.textContent));
-      const list = el('ul');
-      region.querySelectorAll('li').forEach((item) => {
-        const li = el('li');
-        const btn = item.querySelector('button');
-        if (btn) li.append(el('button', {}, btn.textContent));
-        const native = item.querySelector('span');
-        if (native) li.append(el('span', { class: 'native-name' }, native.textContent));
-        list.append(li);
-      });
-      regionEl.append(list);
+      regionEl.append(el('h4', {}, h4.textContent));
+
+      const ul = h4.nextElementSibling;
+      if (ul && ul.tagName === 'UL') {
+        const list = el('ul');
+        ul.querySelectorAll('li').forEach((item) => {
+          const li = el('li');
+          li.append(el('button', {}, item.textContent.trim()));
+          list.append(li);
+        });
+        regionEl.append(list);
+      }
       regionsDiv.append(regionEl);
     });
+
     panelInner.append(regionsDiv);
     panel.append(panelInner);
   }
@@ -461,10 +518,8 @@ function buildHamburger(header) {
     if (isOpen) {
       header.classList.remove('header-mobile-open');
       header.classList.remove('is-open');
-      // Collapse all mobile accordions
       collapseAllAccordions(header);
       btn.setAttribute('aria-label', 'Open navigation menu');
-      // Swap to hamburger icon
       btn.textContent = '';
       btn.append(hamburgerIcon());
     } else {
@@ -472,7 +527,6 @@ function buildHamburger(header) {
       header.classList.add('header-mobile-open');
       header.classList.add('is-open');
       btn.setAttribute('aria-label', 'Close navigation menu');
-      // Swap to close icon
       btn.textContent = '';
       btn.append(closeIcon());
     }
@@ -486,25 +540,25 @@ function handleAccordionClick(header, item, mql) {
   collapseAllAccordions(header);
   if (!wasExpanded) {
     item.classList.add('is-expanded');
-    const panel = item.querySelector('.header-megamenu-panel');
-    if (panel) panel.classList.add('mobile-visible');
+    const panelEl = item.querySelector('.header-megamenu-panel');
+    if (panelEl) panelEl.classList.add('mobile-visible');
   }
 }
 
 function movePanelsIntoNavItems(header) {
-  const panels = header.querySelectorAll('.header-inner > .header-megamenu-panel');
+  const panelEls = header.querySelectorAll('.header-inner > .header-megamenu-panel');
   header.querySelectorAll('.header-nav-item').forEach((item) => {
     const idx = item.dataset.panelIndex;
-    if (idx !== undefined && panels[idx] && !item.contains(panels[idx])) {
-      item.append(panels[idx]);
+    if (idx !== undefined && panelEls[idx] && !item.contains(panelEls[idx])) {
+      item.append(panelEls[idx]);
     }
   });
 }
 
 function movePanelsBackToInner(header) {
   const inner = header.querySelector('.header-inner');
-  header.querySelectorAll('.header-nav-item > .header-megamenu-panel').forEach((panel) => {
-    inner.append(panel);
+  header.querySelectorAll('.header-nav-item > .header-megamenu-panel').forEach((panelEl) => {
+    inner.append(panelEl);
   });
 }
 
@@ -512,11 +566,11 @@ function setupMobileAccordion(header) {
   const mql = window.matchMedia('(max-width: 1023px)');
 
   header.querySelectorAll('.header-nav-item').forEach((item) => {
-    const trigger = item.querySelector('.header-nav-trigger');
-    if (!trigger || trigger.dataset.mobileReady) return;
-    trigger.dataset.mobileReady = 'true';
-    trigger.append(el('span', { class: 'header-nav-chevron' }, chevronIcon()));
-    trigger.addEventListener('click', () => handleAccordionClick(header, item, mql));
+    const triggerEl = item.querySelector('.header-nav-trigger');
+    if (!triggerEl || triggerEl.dataset.mobileReady) return;
+    triggerEl.dataset.mobileReady = 'true';
+    triggerEl.append(el('span', { class: 'header-nav-chevron' }, chevronIcon()));
+    triggerEl.addEventListener('click', () => handleAccordionClick(header, item, mql));
   });
 
   if (mql.matches) movePanelsIntoNavItems(header);
@@ -540,11 +594,9 @@ function setupMobileAccordion(header) {
 }
 
 export default async function decorate(block) {
-  let resp = await fetch('/nav.plain.html');
-  if (!resp.ok) resp = await fetch('/content/nav.plain.html');
+  const resp = await fetch('/nav.plain.html');
   if (!resp.ok) return;
   const html = await resp.text();
-  // DOMParser is safe for parsing trusted HTML in browser context
   const parser = new DOMParser(); // eslint-disable-line secure-coding/no-xxe-injection
   const doc = parser.parseFromString(html, 'text/html');
   const sections = doc.querySelectorAll(':scope > body > div');
