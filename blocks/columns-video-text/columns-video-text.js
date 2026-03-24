@@ -18,6 +18,8 @@ function buildVideoCol(col) {
     posterImg.alt = posterAlt;
     posterImg.className = 'video-poster';
     posterImg.loading = 'lazy';
+    posterImg.width = 640;
+    posterImg.height = 360;
     const playBtn = document.createElement('button');
     playBtn.className = 'video-play-btn';
     playBtn.setAttribute('aria-label', 'Play video');
@@ -49,6 +51,14 @@ function buildTextCol(col) {
   const iconP = col.querySelector('p:first-child');
   const h2 = col.querySelector('h2');
   if (iconP && h2 && iconP.querySelector('img')) {
+    const iconImg = iconP.querySelector('img');
+    if (iconImg) {
+      iconImg.loading = 'lazy';
+      if (!iconImg.hasAttribute('width')) {
+        iconImg.setAttribute('width', '48');
+        iconImg.setAttribute('height', '48');
+      }
+    }
     const iconRow = document.createElement('div');
     iconRow.className = 'icon-heading-row';
     iconP.classList.add('icon-wrap');

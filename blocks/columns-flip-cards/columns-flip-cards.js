@@ -50,6 +50,8 @@ function buildCard(card) {
   iconImg.src = card.iconSrc;
   iconImg.alt = card.iconAlt;
   iconImg.loading = 'lazy';
+  iconImg.width = 60;
+  iconImg.height = 60;
   iconDiv.append(iconImg);
 
   const h3 = document.createElement('h3');

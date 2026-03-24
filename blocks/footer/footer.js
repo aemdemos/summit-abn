@@ -2,10 +2,7 @@ import { ensureDOMPurify } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   await ensureDOMPurify();
-  const footerMeta = document.head.querySelector('meta[name="footer"]')?.content;
-  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
-  let resp = await fetch(`${footerPath}.plain.html`);
-  if (!resp.ok) resp = await fetch(`/content${footerPath}.plain.html`);
+  const resp = await fetch('/content/footer.plain.html');
   if (!resp.ok) return;
 
   const html = await resp.text();
@@ -51,6 +48,12 @@ export default async function decorate(block) {
       links.forEach((a) => {
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
+        const img = a.querySelector('img');
+        if (img) {
+          img.loading = 'lazy';
+          img.setAttribute('width', '24');
+          img.setAttribute('height', '24');
+        }
         socialDiv.append(a);
       });
       rightDiv.append(socialDiv);
@@ -78,6 +81,9 @@ export default async function decorate(block) {
     arrowImg.src = '/content/images/icon-arrow-right.svg';
     arrowImg.alt = '';
     arrowImg.className = 'subscribe-arrow';
+    arrowImg.loading = 'lazy';
+    arrowImg.width = 16;
+    arrowImg.height = 16;
     btn.append(arrowImg);
 
     form.append(input);

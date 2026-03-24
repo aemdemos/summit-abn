@@ -174,6 +174,8 @@ function buildMegamenuPromo(promo) {
       src: resolveNavPath(image.getAttribute('src')),
       alt: image.getAttribute('alt') || '',
       loading: 'lazy',
+      width: '400',
+      height: '225',
     }));
     promoEl.append(imgDiv);
   }
@@ -196,6 +198,8 @@ function buildMegamenuArticles(articles) {
           src: resolveNavPath(img.getAttribute('src')),
           alt: img.getAttribute('alt') || '',
           loading: 'lazy',
+          width: '300',
+          height: '170',
         }));
       }
       cardEl.append(imgWrap);
@@ -536,10 +540,7 @@ function setupMobileAccordion(header) {
 }
 
 export default async function decorate(block) {
-  const navMeta = document.head.querySelector('meta[name="nav"]')?.content;
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  let resp = await fetch(`${navPath}.plain.html`);
-  if (!resp.ok) resp = await fetch(`/content${navPath}.plain.html`);
+  const resp = await fetch('/content/nav.plain.html');
   if (!resp.ok) return;
   const html = await resp.text();
   // DOMParser is safe for parsing trusted HTML in browser context

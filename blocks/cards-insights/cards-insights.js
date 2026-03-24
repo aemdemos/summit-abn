@@ -11,7 +11,12 @@ function buildImageWrapper(imageCol) {
       { media: '(min-width: 600px)', width: '750' },
       { width: '400' },
     ]);
-    moveInstrumentation(img, optimized.querySelector('img'));
+    const optimizedImg = optimized.querySelector('img');
+    if (optimizedImg) {
+      optimizedImg.setAttribute('width', '750');
+      optimizedImg.setAttribute('height', '422');
+    }
+    moveInstrumentation(img, optimizedImg);
     wrapper.append(optimized);
   }
   return wrapper;
