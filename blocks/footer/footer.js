@@ -2,7 +2,8 @@ import { ensureDOMPurify } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   await ensureDOMPurify();
-  const resp = await fetch('/content/footer.plain.html');
+  let resp = await fetch('/footer.plain.html');
+  if (!resp.ok) resp = await fetch('/content/footer.plain.html');
   if (!resp.ok) return;
 
   const html = await resp.text();

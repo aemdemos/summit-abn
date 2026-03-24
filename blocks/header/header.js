@@ -540,7 +540,8 @@ function setupMobileAccordion(header) {
 }
 
 export default async function decorate(block) {
-  const resp = await fetch('/content/nav.plain.html');
+  let resp = await fetch('/nav.plain.html');
+  if (!resp.ok) resp = await fetch('/content/nav.plain.html');
   if (!resp.ok) return;
   const html = await resp.text();
   // DOMParser is safe for parsing trusted HTML in browser context
