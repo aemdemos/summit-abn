@@ -1,4 +1,4 @@
-// Standard SVG namespace (must be http:// per W3C spec) 
+// Standard SVG namespace (must be http:// per W3C spec)
 // eslint-disable-next-line browser-security/detect-mixed-content, browser-security/no-http-urls
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -536,7 +536,9 @@ function setupMobileAccordion(header) {
 }
 
 export default async function decorate(block) {
-  const resp = await fetch('/content/nav.plain.html');
+  const navMeta = document.head.querySelector('meta[name="nav"]')?.content;
+  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/content/nav';
+  const resp = await fetch(`${navPath}.plain.html`);
   if (!resp.ok) return;
   const html = await resp.text();
   // DOMParser is safe for parsing trusted HTML in browser context
