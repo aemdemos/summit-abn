@@ -1,3 +1,5 @@
+import { createOptimizedPicture } from '../../scripts/aem.js';
+
 /* Brightcove embed configuration (public identifiers, not secrets) */
 const brightcove = {
   account: '2197926689001',
@@ -69,9 +71,19 @@ export default function decorate(block) {
     return;
   }
 
-  // Boost LCP: make the hero poster image high-priority
-  img.setAttribute('fetchpriority', 'high');
-  img.setAttribute('loading', 'eager');
+  // Replace with responsive picture: webp + sized sources for LCP optimization
+  const picture = img.closest('picture') || img.parentElement;
+  const optimized = createOptimizedPicture(
+    img.src,
+    img.alt || '',
+    true,
+    [{ media: '(min-width: 768px)', width: '1440' }, { width: '768' }],
+  );
+  const newImg = optimized.querySelector('img');
+  newImg.setAttribute('fetchpriority', 'high');
+  newImg.setAttribute('width', '2310');
+  newImg.setAttribute('height', '1300');
+  picture.replaceWith(optimized);
 
   // Skip video on mobile — autoplay is usually blocked and it adds ~2s to critical path
   const isDesktop = window.matchMedia('(min-width: 768px)').matches;

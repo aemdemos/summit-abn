@@ -12,8 +12,8 @@
   padding-left: 15px;
 }
 
-/* Teal vertical line — 3px × 103px accent at top-left of each card */
-.cards-promo .promo-card::before {
+/* Teal vertical line — 3px × 103px accent at top-left of first card only */
+.cards-promo .promo-card:first-child::before {
   content: '';
   position: absolute;
   top: 0;

@@ -7,7 +7,10 @@ function buildImageWrapper(imageCol) {
   wrapper.className = 'cards-insights-image';
   const img = (imageCol.querySelector('picture') || imageCol).querySelector('img');
   if (img && img.src) {
-    const optimized = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
+    const optimized = createOptimizedPicture(img.src, img.alt, false, [
+      { media: '(min-width: 600px)', width: '750' },
+      { width: '400' },
+    ]);
     moveInstrumentation(img, optimized.querySelector('img'));
     wrapper.append(optimized);
   }
