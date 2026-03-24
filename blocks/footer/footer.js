@@ -3,8 +3,9 @@ import { ensureDOMPurify } from '../../scripts/scripts.js';
 export default async function decorate(block) {
   await ensureDOMPurify();
   const footerMeta = document.head.querySelector('meta[name="footer"]')?.content;
-  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/content/footer';
-  const resp = await fetch(`${footerPath}.plain.html`);
+  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
+  let resp = await fetch(`${footerPath}.plain.html`);
+  if (!resp.ok) resp = await fetch(`/content${footerPath}.plain.html`);
   if (!resp.ok) return;
 
   const html = await resp.text();

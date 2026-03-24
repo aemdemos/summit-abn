@@ -537,8 +537,9 @@ function setupMobileAccordion(header) {
 
 export default async function decorate(block) {
   const navMeta = document.head.querySelector('meta[name="nav"]')?.content;
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/content/nav';
-  const resp = await fetch(`${navPath}.plain.html`);
+  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
+  let resp = await fetch(`${navPath}.plain.html`);
+  if (!resp.ok) resp = await fetch(`/content${navPath}.plain.html`);
   if (!resp.ok) return;
   const html = await resp.text();
   // DOMParser is safe for parsing trusted HTML in browser context
