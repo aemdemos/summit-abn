@@ -432,7 +432,7 @@ function buildSiteSelector(toolsSection, header) {
   if (panelSource) {
     const titleBar = el('div', { class: 'site-selector-title-bar' });
     const titleBarInner = el('div', { class: 'site-selector-title-bar-inner' });
-    titleBarInner.append(el('h3', {}, 'Choose your site'));
+    titleBarInner.append(el('h3', {}, 'Select Your Location'));
     titleBar.append(titleBarInner);
     panel.append(titleBar);
 
