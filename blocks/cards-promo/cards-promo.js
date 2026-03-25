@@ -9,6 +9,14 @@ export default function decorate(block) {
       const img = col.querySelector('picture') || col.querySelector('img');
       if (img && !col.querySelector('h4') && !col.querySelector('h3')) {
         col.classList.add('promo-card-image');
+        // Ensure images have lazy loading and dimensions for CLS prevention
+        col.querySelectorAll('img').forEach((imgEl) => {
+          imgEl.loading = 'lazy';
+          if (!imgEl.hasAttribute('width')) {
+            imgEl.setAttribute('width', '600');
+            imgEl.setAttribute('height', '400');
+          }
+        });
         imageCol = col;
       } else {
         col.classList.add('promo-card-body');

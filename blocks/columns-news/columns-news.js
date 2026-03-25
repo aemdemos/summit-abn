@@ -8,6 +8,14 @@ export default function decorate(block) {
       const pic = col.querySelector('picture') || col.querySelector('img');
       if (pic && !col.querySelector('h2') && !col.querySelector('h3')) {
         col.classList.add('columns-news-img-col');
+        // Ensure images have lazy loading and dimensions for CLS prevention
+        col.querySelectorAll('img').forEach((img) => {
+          img.loading = 'lazy';
+          if (!img.hasAttribute('width')) {
+            img.setAttribute('width', '800');
+            img.setAttribute('height', '450');
+          }
+        });
       }
     });
   });
@@ -22,6 +30,11 @@ export default function decorate(block) {
     const iconImg = firstP ? firstP.querySelector('img') : null;
 
     if (iconImg && firstP.children.length === 1) {
+      iconImg.loading = 'lazy';
+      if (!iconImg.hasAttribute('width')) {
+        iconImg.setAttribute('width', '48');
+        iconImg.setAttribute('height', '48');
+      }
       // Create icon wrapper
       const iconWrapper = document.createElement('div');
       iconWrapper.className = 'news-icon';

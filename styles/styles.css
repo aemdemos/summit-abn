@@ -61,17 +61,17 @@
   --transition-easing: ease;
 }
 
-/* fallback fonts */
+/* fallback fonts — multiple local() sources for cross-platform coverage */
 @font-face {
   font-family: Theinhardt-fallback;
   size-adjust: 100%;
-  src: local('Arial');
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
 }
 
 @font-face {
   font-family: Klavika-fallback;
   size-adjust: 100%;
-  src: local('Arial');
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
 }
 
 /* Responsive adjustments — source: breakpoints.json, typography.json */
@@ -98,6 +98,11 @@ body.appear {
 
 header {
   height: var(--header-height);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
 }
 
 header .header,
