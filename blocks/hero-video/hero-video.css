@@ -101,9 +101,9 @@
 
 /* CTA button */
 .hero-video .hero-video-overlay a {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
   font-family: var(--heading-font-family);
   font-size: 12px;
   font-weight: 500;
@@ -111,9 +111,8 @@
   background: transparent;
   border: 2px solid var(--brand-primary, #1e9bd7);
   border-radius: 24px;
-  padding: 0 40px 0 60px;
+  padding: 0 60px;
   height: 40px;
-  line-height: 38px;
   text-transform: uppercase;
   letter-spacing: 1.68px;
   text-decoration: none;
@@ -123,17 +122,27 @@
     color var(--transition-duration) var(--transition-easing);
 }
 
-/* CTA arrow icon */
+/* CTA arrow icon — always brand-blue, pinned 10px from right edge */
 .hero-video .hero-video-overlay a::after {
-  content: '→';
-  font-size: 16px;
-  line-height: 1;
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.875em;
+  height: 1em;
+  background-color: var(--brand-primary, #1e9bd7);
+  mask: var(--cta-arrow-svg) no-repeat center / contain;
 }
 
 .hero-video .hero-video-overlay a:hover {
   background-color: var(--brand-primary, #1e9bd7);
   color: #fff;
   text-decoration: none;
+}
+
+.hero-video .hero-video-overlay a:hover::after {
+  background-color: #fff;
 }
 
 /* No-image fallback */

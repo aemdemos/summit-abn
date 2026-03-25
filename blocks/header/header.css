@@ -162,6 +162,10 @@ a.header-contact-link:hover {
   flex-shrink: 0;
 }
 
+.header-site-selector.is-open {
+  position: relative;
+}
+
 .header-site-selector-trigger {
   display: flex;
   flex-wrap: wrap;
@@ -263,6 +267,8 @@ a.header-contact-link:hover {
   display: block;
   background: #fff;
   box-shadow: rgb(0 0 0 / 60%) 0 6px 6px -5px;
+  right: 0;
+  left: auto;
 }
 
 /* Dark title bar */
@@ -761,8 +767,26 @@ a.article-card-title:hover {
 }
 
 .header.is-open .header-site-selector-trigger {
-  color: var(--text-color, #262626);
-  border-color: rgb(0 0 0 / 20%);
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.header.is-open .ss-box {
+  background: #000;
+  color: #fff;
+}
+
+.header.is-open .site-selector-name {
+  color: #fff;
+}
+
+.header.is-open .site-selector-label {
+  color: #fff;
+}
+
+.header.is-open .site-selector-globe {
+  color: #fff;
 }
 
 .header.is-open .site-selector-plus {

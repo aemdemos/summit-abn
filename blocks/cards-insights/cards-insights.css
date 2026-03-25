@@ -129,7 +129,9 @@
 }
 
 .cards-insights-container > .default-content-wrapper:last-child a {
-  display: inline-block;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
   font-family: var(--heading-font-family);
   font-size: 12px;
   font-weight: 500;
@@ -140,14 +142,29 @@
   border-radius: 24px;
   padding: 0 60px;
   height: 40px;
-  line-height: 38px;
   text-decoration: none;
   transition: background-color var(--transition-duration) var(--transition-easing),
     color var(--transition-duration) var(--transition-easing);
+}
+
+.cards-insights-container > .default-content-wrapper:last-child a::after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.875em;
+  height: 1em;
+  background-color: var(--brand-primary, #1e9bd7);
+  mask: var(--cta-arrow-svg) no-repeat center / contain;
 }
 
 .cards-insights-container > .default-content-wrapper:last-child a:hover {
   background-color: var(--brand-primary, #1e9bd7);
   color: #fff;
   text-decoration: none;
+}
+
+.cards-insights-container > .default-content-wrapper:last-child a:hover::after {
+  background-color: #fff;
 }
