@@ -38,42 +38,35 @@ export default function decorate(block) {
     const imageWrapper = buildImageWrapper(cols[0]);
     const bodyCol = cols[1];
 
-    // Build card body and extract category
-    let categoryEl;
+    // Body column has a fixed sequence: category <p>, title <h3>, date <p>, author <p>, description <p>
     const body = document.createElement('div');
     body.className = 'cards-insights-body';
 
-    if (bodyCol !== undefined && bodyCol !== null) {
-      const elements = [...bodyCol.querySelectorAll(':scope > p, :scope > h3')];
+    if (bodyCol) {
+      const children = [...bodyCol.querySelectorAll(':scope > p, :scope > h3')];
+      const classMap = ['cards-insights-category', 'cards-insights-title', 'cards-insights-date', 'cards-insights-author', 'cards-insights-description'];
+      let idx = 0;
 
-      elements.forEach((el) => {
-        if (el.tagName === 'H3') {
+      children.forEach((el) => {
+        if (el.tagName === 'H3') idx = 1;
+        const cls = classMap[idx] || 'cards-insights-description';
+        if (cls === 'cards-insights-title') {
           const titleDiv = document.createElement('div');
-          titleDiv.className = 'cards-insights-title';
+          titleDiv.className = cls;
           titleDiv.append(el);
           body.append(titleDiv);
-        } else if (el.tagName === 'P') {
-          const text = el.textContent.trim();
-          const links = el.querySelectorAll('a');
-
-          if (!categoryEl && links.length === 0 && text.length < 40 && !text.includes('/')) {
-            el.className = 'cards-insights-category';
-            categoryEl = el;
-          } else if (text.match(/\b\d{4}\b/) && text.includes('/')) {
-            el.className = 'cards-insights-date';
-            body.append(el);
-          } else if (links.length > 0 && text.length < 80 && !text.match(/\b\d{4}\b/)) {
-            el.className = 'cards-insights-author';
-            body.append(el);
-          } else {
-            el.className = 'cards-insights-description';
-            body.append(el);
-          }
+        } else if (cls === 'cards-insights-category') {
+          el.className = cls;
+        } else {
+          el.className = cls;
+          body.append(el);
         }
+        idx += 1;
       });
     }
 
     // Assemble card: category → image → body
+    const categoryEl = bodyCol?.querySelector('.cards-insights-category');
     if (categoryEl) card.append(categoryEl);
     if (imageWrapper) card.append(imageWrapper);
     card.append(body);

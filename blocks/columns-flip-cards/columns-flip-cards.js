@@ -1,35 +1,30 @@
 function parseCards(cardsCol) {
+  // Split children at each <h3> to form card groups:
+  //   before h3: front-icon <p><img>
+  //   h3: title
+  //   after h3: description <p>, then optional back-icon <p><img>
   const children = [...cardsCol.children];
   const cards = [];
-  let i = 0;
-  while (i < children.length) {
-    const el = children[i];
-    const icon = el.tagName === 'P' ? el.querySelector('img') : null;
-    const title = children[i + 1];
-    const desc = children[i + 2];
-    if (icon && title && desc) {
-      const card = {
-        iconSrc: icon.src,
-        iconAlt: icon.alt,
-        title: title.textContent,
-        description: desc.textContent,
-        backIconSrc: null,
-      };
-      i += 3;
-      // Check if next element is a back icon (P with img not followed by h3)
-      const next = children[i];
-      if (next && next.tagName === 'P' && next.querySelector('img')) {
-        const after = children[i + 1];
-        if (!after || after.tagName !== 'H3') {
-          card.backIconSrc = next.querySelector('img').src;
-          i += 1;
-        }
-      }
-      cards.push(card);
-    } else {
-      i += 1;
-    }
-  }
+  const h3Indices = children.reduce((acc, el, idx) => {
+    if (el.tagName === 'H3') acc.push(idx);
+    return acc;
+  }, []);
+
+  h3Indices.forEach((h3Idx, pos) => {
+    const nextH3 = pos + 1 < h3Indices.length ? h3Indices[pos + 1] : children.length;
+    const frontIcon = h3Idx > 0 ? children[h3Idx - 1].querySelector('img') : null;
+    const desc = children[h3Idx + 1];
+    // Any remaining <p> with img between description and next card's front-icon is a back-icon
+    const backEl = h3Idx + 2 < nextH3 - 1 ? children[h3Idx + 2] : null;
+    const backIcon = backEl?.querySelector('img');
+    cards.push({
+      iconSrc: frontIcon?.src || '',
+      iconAlt: frontIcon?.alt || '',
+      title: children[h3Idx].textContent,
+      description: desc?.textContent || '',
+      backIconSrc: backIcon?.src || null,
+    });
+  });
   return cards;
 }
 
