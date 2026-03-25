@@ -75,20 +75,23 @@ function buildUtilityBar(toolsSection) {
 function buildLogo(logoSection) {
   const logoDiv = el('div', { class: 'header-logo' });
   const link = logoSection.querySelector('a');
-  const picture = logoSection.querySelector('picture');
-  if (link && picture) {
+  const pictures = logoSection.querySelectorAll('picture');
+  if (link && pictures.length > 0) {
     const a = el('a', {
       href: link.getAttribute('href'),
       'aria-label': 'AllianceBernstein Home',
     });
-    // Use the DA <picture> element directly — EDS resolves media URLs correctly
-    const img = picture.querySelector('img');
-    if (img) {
-      img.loading = 'eager';
-      img.removeAttribute('width');
-      img.removeAttribute('height');
-    }
-    a.append(picture);
+    // DA nav logo section: first picture = white logo, second picture = dark logo
+    pictures.forEach((pic, i) => {
+      const img = pic.querySelector('img');
+      if (img) {
+        img.loading = 'eager';
+        img.removeAttribute('width');
+        img.removeAttribute('height');
+      }
+      pic.classList.add(i === 0 ? 'header-logo-white' : 'header-logo-dark');
+      a.append(pic);
+    });
     logoDiv.append(a);
   }
   return logoDiv;
@@ -419,7 +422,13 @@ function buildSiteSelector(toolsSection, header) {
   const panel = el('div', { class: 'header-site-selector-panel' });
 
   // DA site-selector: two child divs — first is trigger area, second contains panel content
-  const panelSource = ssSrc.querySelector(':scope > div:nth-child(2) > div');
+  // In DA-published format, the second child has multiple sub-divs:
+  //   first sub-div = h3 title, second sub-div = h4+ul region pairs
+  const panelContainer = ssSrc.querySelector(':scope > div:nth-child(2)');
+  // Find the sub-div that actually contains h4 region headings
+  const panelSource = panelContainer
+    ? [...panelContainer.querySelectorAll(':scope > div')].find((d) => d.querySelector('h4'))
+    : null;
   if (panelSource) {
     const titleBar = el('div', { class: 'site-selector-title-bar' });
     const titleBarInner = el('div', { class: 'site-selector-title-bar-inner' });
@@ -442,8 +451,10 @@ function buildSiteSelector(toolsSection, header) {
       if (ul && ul.tagName === 'UL') {
         const list = el('ul');
         ul.querySelectorAll('li').forEach((item) => {
+          // DA escapes <button> to &lt;button>, so strip the prefix from text
+          const text = item.textContent.trim().replace(/^<button>/, '');
           const li = el('li');
-          li.append(el('button', {}, item.textContent.trim()));
+          li.append(el('button', {}, text));
           list.append(li);
         });
         regionEl.append(list);
