@@ -93,6 +93,11 @@ a.header-contact-link:hover {
   line-height: 0;
 }
 
+/* Two-image logo: white (default on transparent) / dark (on open state) */
+.header-logo .header-logo-dark {
+  display: none;
+}
+
 /* ---- Navigation ---- */
 .header-nav {
   display: flex;
@@ -747,8 +752,12 @@ a.article-card-title:hover {
   color: var(--link-color, #1e9bd7);
 }
 
-.header.is-open .header-logo img {
-  filter: brightness(0);
+.header.is-open .header-logo .header-logo-white {
+  display: none;
+}
+
+.header.is-open .header-logo .header-logo-dark {
+  display: block;
 }
 
 .header.is-open .header-site-selector-trigger {
@@ -860,9 +869,13 @@ a.article-card-title:hover {
     background: #fff;
   }
 
-  /* In mobile open state, switch logo to dark */
-  .header.is-open.header-mobile-open .header-logo img {
-    filter: brightness(0);
+  /* In mobile open state, swap to dark logo */
+  .header.is-open.header-mobile-open .header-logo .header-logo-white {
+    display: none;
+  }
+
+  .header.is-open.header-mobile-open .header-logo .header-logo-dark {
+    display: block;
   }
 
   /* Contact Us color in open state (dark text on white bg) */
