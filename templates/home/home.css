@@ -112,8 +112,3 @@
   align-items: center;
   justify-content: center;
 }
-
-/* Hide Terms of Use / ACCEPT / tracking-pixel default content in quote section */
-.quote-dark-container > .default-content-wrapper {
-  display: none;
-}
