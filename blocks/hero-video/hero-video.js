@@ -51,28 +51,25 @@ async function loadBackgroundVideo(container) {
 }
 
 export default function decorate(block) {
-  const rows = [...block.children];
-  const [imageRow, contentRow] = rows;
+  // Single row, single cell — image + text content all in one cell
+  const row = block.children[0];
+  const cell = row?.children[0];
+  if (!cell) return;
 
-  // Row 1: Background image (poster fallback)
-  if (imageRow) {
-    imageRow.classList.add('hero-video-background');
-  }
-
-  // Row 2: Content overlay
-  if (contentRow) {
-    contentRow.classList.add('hero-video-overlay');
-  }
-
-  // No-image fallback
-  const img = imageRow?.querySelector('img');
+  // Extract the image (first picture/img) for the background layer
+  const img = cell.querySelector('img');
   if (!img) {
     block.classList.add('no-image');
     return;
   }
 
-  // Replace with responsive picture: webp + sized sources for LCP optimization
   const picture = img.closest('picture') || img.parentElement;
+  const imgWrapper = picture.closest('p') || picture;
+
+  // Build background layer
+  const bgDiv = document.createElement('div');
+  bgDiv.className = 'hero-video-background';
+  const bgInner = document.createElement('div');
   const optimized = createOptimizedPicture(
     img.src,
     img.alt || '',
@@ -83,11 +80,21 @@ export default function decorate(block) {
   newImg.setAttribute('fetchpriority', 'high');
   newImg.setAttribute('width', '2310');
   newImg.setAttribute('height', '1300');
-  picture.replaceWith(optimized);
+  bgInner.append(optimized);
+  bgDiv.append(bgInner);
+
+  // Remove image from the content flow
+  imgWrapper.remove();
+
+  // The remaining content (h1, p, a) becomes the overlay
+  row.className = 'hero-video-overlay';
+
+  // Insert background before overlay
+  block.prepend(bgDiv);
 
   // Skip video on mobile — autoplay is usually blocked and it adds ~2s to critical path
   const isDesktop = window.matchMedia('(min-width: 768px)').matches;
   if (isDesktop) {
-    loadBackgroundVideo(imageRow.querySelector('div') || imageRow);
+    loadBackgroundVideo(bgInner);
   }
 }
