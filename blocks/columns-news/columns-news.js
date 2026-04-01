@@ -2,28 +2,24 @@ export default function decorate(block) {
   const cols = [...block.firstElementChild.children];
   block.classList.add(`columns-news-${cols.length}-cols`);
 
-  // setup image columns — detect by picture or img
+  // Fixed layout: col[0] = image, col[1] = text
   [...block.children].forEach((row) => {
-    [...row.children].forEach((col) => {
-      const pic = col.querySelector('picture') || col.querySelector('img');
-      if (pic && !col.querySelector('h2') && !col.querySelector('h3')) {
-        col.classList.add('columns-news-img-col');
-        // Ensure images have lazy loading and dimensions for CLS prevention
-        col.querySelectorAll('img').forEach((img) => {
-          img.loading = 'lazy';
-          if (!img.hasAttribute('width')) {
-            img.setAttribute('width', '800');
-            img.setAttribute('height', '450');
-          }
-        });
-      }
-    });
+    const rowCols = [...row.children];
+    const imgCol = rowCols[0];
+    if (imgCol) {
+      imgCol.classList.add('columns-news-img-col');
+      imgCol.querySelectorAll('img').forEach((img) => {
+        img.loading = 'lazy';
+        if (!img.hasAttribute('width')) {
+          img.setAttribute('width', '800');
+          img.setAttribute('height', '450');
+        }
+      });
+    }
   });
 
-  // In the text column, create icon-left-of-text layout
-  const textCol = [...block.firstElementChild.children].find(
-    (col) => !col.classList.contains('columns-news-img-col'),
-  );
+  // Text column is always col[1]
+  const textCol = [...block.firstElementChild.children][1];
 
   if (textCol) {
     const firstP = textCol.querySelector('p:first-child');
