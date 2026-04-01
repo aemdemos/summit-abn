@@ -1,0 +1,32 @@
+{
+  ":type": "multi-sheet",
+  ":names": ["blocks"],
+  "blocks": {
+    "total": 20,
+    "offset": 0,
+    "limit": 20,
+    "columns": ["name", "path"],
+    "data": [
+      { "name": "Accordion", "path": "/tools/sidekick/blocks/accordion" },
+      { "name": "Card Carousel", "path": "/tools/sidekick/blocks/card-carousel" },
+      { "name": "Cards", "path": "/tools/sidekick/blocks/cards" },
+      { "name": "Cards (Insights)", "path": "/tools/sidekick/blocks/cards-insights" },
+      { "name": "Cards (Promo)", "path": "/tools/sidekick/blocks/cards-promo" },
+      { "name": "Carousel", "path": "/tools/sidekick/blocks/carousel" },
+      { "name": "Columns", "path": "/tools/sidekick/blocks/columns" },
+      { "name": "Columns (Flip Cards)", "path": "/tools/sidekick/blocks/columns-flip-cards" },
+      { "name": "Columns (Image Text)", "path": "/tools/sidekick/blocks/columns-image-text" },
+      { "name": "Columns (News)", "path": "/tools/sidekick/blocks/columns-news" },
+      { "name": "Columns (Video Text)", "path": "/tools/sidekick/blocks/columns-video-text" },
+      { "name": "Embed", "path": "/tools/sidekick/blocks/embed" },
+      { "name": "Hero", "path": "/tools/sidekick/blocks/hero" },
+      { "name": "Hero (Video)", "path": "/tools/sidekick/blocks/hero-video" },
+      { "name": "Modal", "path": "/tools/sidekick/blocks/modal" },
+      { "name": "Quote", "path": "/tools/sidekick/blocks/quote" },
+      { "name": "Quote (Dark)", "path": "/tools/sidekick/blocks/quote-dark" },
+      { "name": "Search", "path": "/tools/sidekick/blocks/search" },
+      { "name": "Table", "path": "/tools/sidekick/blocks/table" },
+      { "name": "Tabs", "path": "/tools/sidekick/blocks/tabs" }
+    ]
+  }
+}
