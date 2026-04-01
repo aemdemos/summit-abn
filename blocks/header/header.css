@@ -510,7 +510,7 @@ a.header-contact-link:hover {
 
 .header-megamenu-panel.is-open {
   transform: scaleY(1);
-  box-shadow: 0 6px 6px -5px rgba(0 0 0 / 60%);
+  box-shadow: 0 6px 6px -5px rgb(0 0 0 / 60%);
   background: #fff;
   transition: transform 0.4s ease, background-color 0s 0s;
 }
