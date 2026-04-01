@@ -24,6 +24,12 @@
   width: 100%;
   aspect-ratio: 16 / 8;
   object-fit: cover;
+  transition: filter 0.3s ease;
+}
+
+.cards-insights .cards-insights-card:hover .cards-insights-image img {
+  filter: brightness(70%);
+  transition: filter 0s;
 }
 
 /* Category label */
@@ -68,6 +74,7 @@
   font-weight: 400;
   color: #000;
   line-height: 1.14;
+  padding-bottom: 8px;
 }
 
 /* Author */

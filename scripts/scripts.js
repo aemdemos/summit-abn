@@ -216,6 +216,13 @@ export function decorateButtons(main) {
       a.classList.add('secondary');
       em.replaceWith(a);
     }
+
+    // Italic text inside the link → white button text
+    const innerEm = a.querySelector('em');
+    if (innerEm) {
+      a.classList.add('button-light');
+      innerEm.replaceWith(...innerEm.childNodes);
+    }
   });
 }
 
@@ -270,6 +277,14 @@ export function decorateSections(main) {
             .filter((style) => style)
             .map((style) => toClassName(style.trim()));
           styles.forEach((style) => section.classList.add(style));
+        } else if (key === 'section-background') {
+          const bgUrl = typeof value === 'string' ? value : '';
+          if (bgUrl) {
+            section.style.backgroundImage = `url('${bgUrl}')`;
+            section.style.backgroundSize = 'cover';
+            section.style.backgroundPosition = 'center';
+            section.style.backgroundRepeat = 'no-repeat';
+          }
         } else if (isSafeObjectKey(key)) {
           section.setAttribute(`data-${key}`, String(value ?? ''));
         }

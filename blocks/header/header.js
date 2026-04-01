@@ -17,18 +17,20 @@ function createIcon(viewBox, w, h, pathD) {
 
 /* eslint-disable max-len */
 const SEARCH_D = 'M384 208A176 176 0 1 0 32 208a176 176 0 1 0 352 0zM343.3 366C307 397.2 259.7 416 208 416C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208c0 51.7-18.8 99-50 135.3L507.3 484.7c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0L343.3 366z';
-const CLOSE_D = 'M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3l105.4 105.3c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256l105.3-105.4z';
+const CLOSE_D = 'M256 32a224 224 0 1 1 0 448 224 224 0 1 1 0-448zm0 480A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM172.1 133.6c-5.8-6.7-15.9-7.5-22.6-1.7s-7.5 15.9-1.7 22.6L234.9 256 147.9 357.6c-5.8 6.7-5 16.8 1.7 22.6s16.8 5 22.6-1.7L256 280.6l83.9 97.8c5.8 6.7 15.8 7.5 22.6 1.7s7.5-15.8 1.7-22.6L277.1 256l87.1-101.6c5.8-6.7 5-16.8-1.7-22.6s-16.8-5-22.6 1.7L256 231.4l-83.9-97.8z';
 const GLOBE_D = 'M256 464c7.4 0 27-7.2 47.6-48.4c8.8-17.7 16.4-39.2 22-63.6l-139.2 0c5.6 24.4 13.2 45.9 22 63.6C229 456.8 248.6 464 256 464zM178.5 304l155 0c1.6-15.3 2.5-31.4 2.5-48s-.9-32.7-2.5-48l-155 0c-1.6 15.3-2.5 31.4-2.5 48s.9 32.7 2.5 48zm7.9-144l139.2 0c-5.6-24.4-13.2-45.9-22-63.6C283 55.2 263.4 48 256 48s-27 7.2-47.6 48.4c-8.8 17.7-16.4 39.2-22 63.6zm195.3 48c1.5 15.5 2.2 31.6 2.2 48s-.8 32.5-2.2 48l76.7 0c3.6-15.4 5.6-31.5 5.6-48s-1.9-32.6-5.6-48l-76.7 0zm58.8-48c-21.4-41.1-56.1-74.1-98.4-93.4c14.1 25.6 25.3 57.5 32.6 93.4l65.9 0zm-303.3 0c7.3-35.9 18.5-67.7 32.6-93.4c-42.3 19.3-77 52.3-98.4 93.4l65.9 0zM53.6 208c-3.6 15.4-5.6 31.5-5.6 48s1.9 32.6 5.6 48l76.7 0c-1.5-15.5-2.2-31.6-2.2-48s.8-32.5 2.2-48l-76.7 0zM342.1 445.4c42.3-19.3 77-52.3 98.4-93.4l-65.9 0c-7.3 35.9-18.5 67.7-32.6 93.4zm-172.2 0c-14.1-25.6-25.3-57.5-32.6-93.4l-65.9 0c21.4 41.1 56.1 74.1 98.4 93.4zM256 512A256 256 0 1 1 256 0a256 256 0 1 1 0 512z';
 const HAMBURGER_D = 'M0 96c0-8.8 7.2-16 16-16h416c8.8 0 16 7.2 16 16s-7.2 16-16 16H16c-8.8 0-16-7.2-16-16zm0 160c0-8.8 7.2-16 16-16h416c8.8 0 16 7.2 16 16s-7.2 16-16 16H16c-8.8 0-16-7.2-16-16zm432 160c0 8.8-7.2 16-16 16H16c-8.8 0-16-7.2-16-16s7.2-16 16-16h416c8.8 0 16 7.2 16 16z';
 const PLUS_D = 'M240 352v-80h-80c-8.8 0-16-7.2-16-16s7.2-16 16-16h80v-80c0-8.8 7.2-16 16-16s16 7.2 16 16v80h80c8.8 0 16 7.2 16 16s-7.2 16-16 16h-80v80c0 8.8-7.2 16-16 16s-16-7.2-16-16zm272-96c0 141.4-114.6 256-256 256S0 397.4 0 256 114.6 0 256 0s256 114.6 256 256zM256 32C132.3 32 32 132.3 32 256s100.3 224 224 224 224-100.3 224-224S379.7 32 256 32z';
+const MINUS_D = 'M160 256c0-8.8 7.2-16 16-16h160c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16zm352 0c0 141.4-114.6 256-256 256S0 397.4 0 256 114.6 0 256 0s256 114.6 256 256zM256 32C132.3 32 32 132.3 32 256s100.3 224 224 224 224-100.3 224-224S379.7 32 256 32z';
 const CHEVRON_D = 'M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z';
 /* eslint-enable max-len */
 
 function searchIcon() { return createIcon('0 0 512 512', 20, 20, SEARCH_D); }
-function closeIcon() { return createIcon('0 0 384 512', 18, 18, CLOSE_D); }
+function closeIcon() { return createIcon('0 0 512 512', 33, 33, CLOSE_D); }
 function globeIcon() { return createIcon('0 0 512 512', 16, 16, GLOBE_D); }
 function hamburgerIcon() { return createIcon('0 0 448 512', 22, 22, HAMBURGER_D); }
 function plusIcon() { return createIcon('0 0 512 512', 30, 30, PLUS_D); }
+function minusIcon() { return createIcon('0 0 512 512', 30, 30, MINUS_D); }
 
 function el(tag, attrs = {}, ...children) {
   const e = document.createElement(tag);
@@ -45,11 +47,14 @@ function el(tag, attrs = {}, ...children) {
 
 function closeAllPanels(header) {
   header.classList.remove('is-open');
+  header.style.backgroundColor = 'rgba(255,255,255,0)';
   header.querySelectorAll('.header-megamenu-panel.is-open').forEach((p) => p.classList.remove('is-open'));
   header.querySelectorAll('.header-nav-item.is-active').forEach((i) => i.classList.remove('is-active'));
   header.querySelectorAll('.header-nav-trigger').forEach((t) => t.setAttribute('aria-expanded', 'false'));
   header.querySelector('.header-search-bar')?.classList.remove('is-open');
   header.querySelector('.header-site-selector')?.classList.remove('is-open');
+  const ssIcon = header.querySelector('.site-selector-plus');
+  if (ssIcon) ssIcon.replaceChildren(plusIcon());
 }
 
 function buildUtilityBar(toolsSection) {
@@ -254,6 +259,11 @@ function buildMegamenuArticles(cards) {
   cards.forEach((card) => {
     const cardEl = el('div', { class: 'header-megamenu-article-card' });
 
+    /* Category spans full width on top */
+    if (card.category) cardEl.append(el('span', { class: 'article-card-category' }, card.category));
+
+    /* Body row: image left, meta right */
+    const body = el('div', { class: 'article-card-body' });
     const imgWrap = el('a', {
       href: card.imageLink.getAttribute('href'),
       class: 'article-card-image',
@@ -263,10 +273,9 @@ function buildMegamenuArticles(cards) {
       if (img) img.loading = 'lazy';
       imgWrap.append(card.picture);
     }
-    cardEl.append(imgWrap);
+    body.append(imgWrap);
 
     const metaEl = el('div', { class: 'article-card-meta' });
-    if (card.category) metaEl.append(el('span', { class: 'article-card-category' }, card.category));
     if (card.titleLink) {
       metaEl.append(el('a', {
         href: card.titleLink.getAttribute('href'),
@@ -274,8 +283,11 @@ function buildMegamenuArticles(cards) {
       }, card.titleLink.textContent));
     }
     if (card.date) metaEl.append(el('span', { class: 'article-card-date' }, card.date));
-    if (card.author) metaEl.append(el('span', { class: 'article-card-author' }, card.author));
-    cardEl.append(metaEl);
+    body.append(metaEl);
+    cardEl.append(body);
+
+    /* Author sits below the body row, aligned with the right column */
+    if (card.author) cardEl.append(el('span', { class: 'article-card-author' }, card.author));
 
     articlesEl.append(cardEl);
   });
@@ -306,7 +318,9 @@ function buildMegamenuPanel(li) {
   inner.append(left, right, closeBtn);
 
   const separator = el('div', { class: 'header-megamenu-separator' });
-  panel.append(inner, separator);
+  const panelContent = el('div', { class: 'megamenu-panel-content' });
+  panelContent.append(inner, separator);
+  panel.append(panelContent);
   return panel;
 }
 
@@ -347,6 +361,7 @@ function buildNav(navSection, header) {
       closeAllPanels(header);
       if (!wasActive) {
         header.classList.add('is-open');
+        header.style.backgroundColor = '#fff';
         item.classList.add('is-active');
         panel.classList.add('is-open');
         triggerBtn.setAttribute('aria-expanded', 'true');
@@ -434,7 +449,8 @@ function buildSiteSelector(toolsSection, header) {
     const titleBarInner = el('div', { class: 'site-selector-title-bar-inner' });
     titleBarInner.append(el('h3', {}, 'Select Your Location'));
     titleBar.append(titleBarInner);
-    panel.append(titleBar);
+    const panelContent = el('div', { class: 'site-selector-panel-content' });
+    panelContent.append(titleBar);
 
     const panelInner = el('div', { class: 'site-selector-panel-inner' });
     const regionsDiv = el('div', { class: 'site-selector-regions' });
@@ -463,7 +479,8 @@ function buildSiteSelector(toolsSection, header) {
     });
 
     panelInner.append(regionsDiv);
-    panel.append(panelInner);
+    panelContent.append(panelInner);
+    panel.append(panelContent);
   }
 
   trigger.addEventListener('click', () => {
@@ -471,9 +488,11 @@ function buildSiteSelector(toolsSection, header) {
     closeAllPanels(header);
     if (!wasOpen) {
       header.classList.add('is-open');
+      header.style.backgroundColor = '#fff';
       wrapper.classList.add('is-open');
       trigger.setAttribute('aria-expanded', 'true');
     }
+    iconEl.replaceChildren(wasOpen ? plusIcon() : minusIcon());
   });
 
   wrapper.append(trigger, panel);
@@ -529,6 +548,7 @@ function buildHamburger(header) {
     if (isOpen) {
       header.classList.remove('header-mobile-open');
       header.classList.remove('is-open');
+      header.style.backgroundColor = 'rgba(255,255,255,0)';
       collapseAllAccordions(header);
       btn.setAttribute('aria-label', 'Open navigation menu');
       btn.textContent = '';
@@ -537,6 +557,7 @@ function buildHamburger(header) {
       closeAllPanels(header);
       header.classList.add('header-mobile-open');
       header.classList.add('is-open');
+      header.style.backgroundColor = '#fff';
       btn.setAttribute('aria-label', 'Close navigation menu');
       btn.textContent = '';
       btn.append(closeIcon());
@@ -592,6 +613,7 @@ function setupMobileAccordion(header) {
     } else {
       header.classList.remove('header-mobile-open');
       header.classList.remove('is-open');
+      header.style.backgroundColor = 'rgba(255,255,255,0)';
       collapseAllAccordions(header);
       movePanelsBackToInner(header);
       const hamburger = header.querySelector('.header-hamburger');
@@ -617,6 +639,8 @@ export default async function decorate(block) {
 
   block.textContent = '';
   block.classList.add('header-transparent');
+  // Set transparent-white so bg-color transition interpolates alpha only (no grey midpoint)
+  block.style.backgroundColor = 'rgba(255,255,255,0)';
 
   const headerWrapper = el('div', { class: 'header-inner' });
 
@@ -643,6 +667,7 @@ export default async function decorate(block) {
     closeAllPanels(block);
     if (!wasOpen) {
       block.classList.add('is-open');
+      block.style.backgroundColor = '#fff';
       searchBar.classList.add('is-open');
       searchBar.querySelector('input')?.focus();
     }

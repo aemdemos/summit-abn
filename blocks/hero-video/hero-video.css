@@ -61,10 +61,14 @@
   pointer-events: none;
 }
 
-/* Row 2: Content overlay */
+/* Content overlay */
 .hero-video .hero-video-overlay {
   position: relative;
   z-index: 3;
+  min-height: 400px;
+}
+
+.hero-video .hero-video-overlay > div {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -95,7 +99,7 @@
 }
 
 /* CTA button container */
-.hero-video .hero-video-overlay > div:last-child {
+.hero-video .hero-video-overlay .button-container {
   margin: 20px 0 0;
 }
 
@@ -159,7 +163,7 @@
   content: '';
   position: absolute;
   height: 347px;
-  left: -120px;
+  left: -110px;
   right: 0;
   background: #000;
   z-index: -1;
@@ -180,8 +184,12 @@
     min-height: unset;
     margin: 20% 0 0 110px;
     width: 40%;
-    justify-content: flex-start;
     container-type: inline-size;
+  }
+
+  .hero-video .hero-video-overlay > div {
+    min-height: unset;
+    justify-content: flex-start;
   }
 
   .hero-video h1 {

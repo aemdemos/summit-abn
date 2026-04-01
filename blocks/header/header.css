@@ -16,12 +16,14 @@ header {
   width: 100%;
   z-index: 100;
   height: var(--nav-height, 186px);
+  overflow-x: clip;
 }
 
 header .header {
   position: relative;
   width: 100%;
   height: 100%;
+  transition: background-color 0.4s ease;
 }
 
 /* ---- Utility bar (Contact Us + Search) ---- */
@@ -157,13 +159,9 @@ a.header-contact-link:hover {
 
 /* ---- Site Selector ---- */
 .header-site-selector {
-  position: static;
+  position: relative;
   margin-left: 40px;
   flex-shrink: 0;
-}
-
-.header-site-selector.is-open {
-  position: relative;
 }
 
 .header-site-selector-trigger {
@@ -251,24 +249,26 @@ a.header-contact-link:hover {
   height: 17px;
 }
 
-/* Site selector panel — bg only when open */
+/* Site selector panel — scaleY open/close */
 .header-site-selector-panel {
-  display: none;
   position: absolute;
-  left: 0;
   right: 0;
+  left: auto;
   top: 100%;
   width: 100vw;
   max-width: 100vw;
   z-index: 200;
+  background: transparent;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 0.4s ease, background-color 0s 0.4s;
 }
 
 .header-site-selector.is-open .header-site-selector-panel {
-  display: block;
+  transform: scaleY(1);
   background: #fff;
   box-shadow: rgb(0 0 0 / 60%) 0 6px 6px -5px;
-  right: 0;
-  left: auto;
+  transition: transform 0.4s ease, background-color 0s 0s;
 }
 
 /* Dark title bar */
@@ -478,16 +478,23 @@ a.header-contact-link:hover {
   margin-left: auto;
 }
 
-/* ---- Megamenu panels — bg only when open ---- */
+/* ---- Megamenu panels — scaleY open/close ---- */
 .header-megamenu-panel {
-  display: none;
   position: absolute;
   left: 0;
   right: 0;
   top: 100%;
   width: 100vw;
-  background: transparent;
   z-index: 200;
+  background: transparent;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 0.4s ease, background-color 0s 0.4s;
+}
+
+.megamenu-panel-content {
+  position: relative;
+  border-top: 1px solid #adadad;
 }
 
 /* Position panels relative to the header wrapper, not the nav item */
@@ -502,15 +509,17 @@ a.header-contact-link:hover {
 }
 
 .header-megamenu-panel.is-open {
-  display: block;
+  transform: scaleY(1);
+  box-shadow: 0 6px 6px -5px rgba(0 0 0 / 60%);
   background: #fff;
+  transition: transform 0.4s ease, background-color 0s 0s;
 }
 
 .header-megamenu-inner {
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 40px;
-  max-width: 1176px;
+  grid-template-columns: 33.3333% 66.6666%;
+  gap: 30px;
+  max-width: 980px;
   margin: 0 auto;
   padding: 40px 15px 50px;
 }
@@ -522,7 +531,7 @@ a.header-contact-link:hover {
   background: transparent;
 }
 
-/* Megamenu close button — positioned relative to .header-megamenu-panel */
+/* Megamenu close button — hidden until panel is open */
 .header-megamenu-close {
   position: absolute;
   top: 20px;
@@ -533,11 +542,23 @@ a.header-contact-link:hover {
   padding: 4px;
   color: var(--text-color, #262626);
   z-index: 10;
+  display: none;
+}
+
+/* Override global button:hover which sets color: var(--link-hover-color) */
+.header-megamenu-close:hover,
+.header-megamenu-close:focus {
+  color: var(--text-color, #262626);
 }
 
 .header-megamenu-close svg {
   width: 33px;
   height: 33px;
+  color: var(--link-color);
+}
+
+.header-megamenu-panel.is-open .header-megamenu-close {
+  display: block;
 }
 
 /* ---- Megamenu left column: nav links ---- */
@@ -555,10 +576,10 @@ a.header-contact-link:hover {
   font-family: var(--heading-font-family);
   font-size: 20px;
   font-weight: 400;
-  color: var(--text-color, #262626);
+  color: var(--text-color, #000);
   text-decoration: none;
   letter-spacing: 1.68px;
-  line-height: 1.1;
+  line-height: 22px;
   padding: 6px 0;
   display: inline-block;
 }
@@ -568,12 +589,13 @@ a.header-contact-link:hover {
 }
 
 .header-megamenu-nav li.section-heading {
-  font-family: var(--heading-font-family);
-  font-size: 12px;
+  font-family: var(--body-font-family);
+  font-size: 22px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  color: #999;
+  text-transform: none;
+  letter-spacing: normal;
+  color: #000;
+  line-height: 26px;
   margin-top: 20px;
   margin-bottom: 8px;
   padding-bottom: 4px;
@@ -669,10 +691,16 @@ a.header-contact-link:hover {
 
 .header-megamenu-article-card {
   display: flex;
-  flex-direction: row;
-  gap: 20px;
+  flex-direction: column;
   padding-top: 16px;
   padding-bottom: 16px;
+}
+
+/* Body row: image left, meta right */
+.article-card-body {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
 }
 
 .article-card-image {
@@ -690,13 +718,14 @@ a.header-contact-link:hover {
 }
 
 .article-card-image:hover img {
-  transform: scale(1.05);
+  filter: brightness(70%);
 }
 
+/* Meta: title at top, date at bottom, stretched to image height */
 .article-card-meta {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  justify-content: space-between;
   flex: 1;
   min-width: 0;
 }
@@ -708,6 +737,7 @@ a.header-contact-link:hover {
   text-transform: uppercase;
   letter-spacing: 1.4px;
   color: rgb(38 38 38);
+  margin-bottom: 4px;
 }
 
 a.article-card-title {
@@ -733,14 +763,14 @@ a.article-card-title:hover {
   font-family: var(--body-font-family);
   font-size: 14px;
   color: rgb(0 122 187);
+  margin-left: 194px;
 }
 
 /* ==========================
    OPEN STATE (.is-open): solid white bg, dark text
+   Background-color is driven entirely via inline style in header.js
+   (transparent-white ↔ solid white) for clean alpha-only transition.
    ========================== */
-.header.is-open {
-  background: #fff;
-}
 
 .header.is-open .header-contact-link {
   color: var(--text-color, #262626);
@@ -984,10 +1014,16 @@ a.article-card-title:hover {
     box-shadow: none;
     border-top: none;
     background: transparent;
+    transform: none;
+    transition: none;
   }
 
   .header.is-open.header-mobile-open .header-megamenu-panel.mobile-visible {
     display: block;
+  }
+
+  .header.is-open.header-mobile-open .megamenu-panel-content {
+    position: static;
   }
 
   .header.is-open.header-mobile-open .header-megamenu-inner {
