@@ -1,11 +1,14 @@
 function buildVideoCol(col) {
   col.classList.add('columns-video-text-video-col');
   const poster = col.querySelector('img');
-  const link = col.querySelector('a');
+  // Convention: a link whose text matches its href is a data URL (video source)
+  const link = [...col.querySelectorAll('a')].find(
+    (a) => a.textContent.trim() === a.getAttribute('href'),
+  );
   if (!link) return;
 
   const videoUrl = link.href;
-  const videoTitle = link.textContent || 'Video';
+  const videoTitle = poster?.alt || 'Video';
   const posterSrc = poster ? poster.src : '';
   const posterAlt = poster ? poster.alt : videoTitle;
   col.textContent = '';

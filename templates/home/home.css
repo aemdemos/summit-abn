@@ -80,10 +80,6 @@
  * the entire section. The "Innovation" divider label sits in the preceding
  * section; this section only holds the columns-news block. */
 .section.dark.columns-news-container {
-  background-image: url('https://www.alliancebernstein.com/content/dam/corporate/corporate-images/Corporate_OurFirm_Interstitial_President_Onur_Desktop.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   padding: 80px 0;
 }
 
@@ -103,10 +99,6 @@
 /* === Dark (Quote) section ===
  * Full-bleed background image of a mountain road. */
 .section.dark.quote-dark-container {
-  background-image: url('https://www.alliancebernstein.com/content/dam/corporate/corporate-footer-images/BG-OurFirm-EndPageQuote-Road_Mountains.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   height: 1030px;
   display: flex;
   align-items: center;

@@ -24,6 +24,7 @@
   --light-color: #f7f7f7;
   --dark-color: #000;
   --text-color: #262626;
+  --white-text-color: #fff;
   --link-color: #1e9bd7;
   --link-hover-color: #007abb;
   --overlay-background-color: #f7f7f7;
@@ -62,6 +63,7 @@
   --section-spacing: 0px;
   --transition-duration: 0.3s;
   --transition-easing: ease;
+  --site-max-width: 1920px;
 }
 
 /* fallback fonts — multiple local() sources for cross-platform coverage */
@@ -87,7 +89,9 @@
 
 body {
   display: none;
-  margin: 0;
+  position: relative;
+  max-width: var(--site-max-width);
+  margin: 0 auto;
   background-color: var(--background-color);
   color: var(--text-color);
   font-family: var(--body-font-family);
@@ -208,10 +212,19 @@ a.button:any-link {
   text-decoration: none;
 }
 
+a.button.button-light:any-link {
+  color: var(--white-text-color);
+}
+
 a.button:hover,
 a.button:focus {
   color: var(--link-hover-color);
   text-decoration: underline;
+}
+
+a.button.button-light:hover,
+a.button.button-light:focus {
+  color: var(--white-text-color);
 }
 
 button {

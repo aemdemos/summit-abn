@@ -14,8 +14,11 @@ function parseCards(cardsCol) {
     const nextH3 = pos + 1 < h3Indices.length ? h3Indices[pos + 1] : children.length;
     const frontIcon = h3Idx > 0 ? children[h3Idx - 1].querySelector('img') : null;
     const desc = children[h3Idx + 1];
-    // Any remaining <p> with img between description and next card's front-icon is a back-icon
-    const backEl = h3Idx + 2 < nextH3 - 1 ? children[h3Idx + 2] : null;
+    // Any remaining <p> with img between description and next card boundary is a back-icon.
+    // For intermediate cards, nextH3 - 1 is the next card's front-icon (exclude it).
+    // For the last card, nextH3 = children.length (no front-icon to exclude).
+    const backEnd = pos + 1 < h3Indices.length ? nextH3 - 1 : nextH3;
+    const backEl = h3Idx + 2 < backEnd ? children[h3Idx + 2] : null;
     const backIcon = backEl?.querySelector('img');
     cards.push({
       iconSrc: frontIcon?.src || '',

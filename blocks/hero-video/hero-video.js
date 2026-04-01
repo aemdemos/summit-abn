@@ -1,28 +1,37 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
-/* Brightcove embed configuration (public identifiers, not secrets) */
-const brightcove = {
-  account: '2197926689001',
-  video: '6317554368112',
-  // eslint-disable-next-line secure-coding/no-hardcoded-credentials
-  player: '535c6d42-d2fa-4569-9c50-e047c4209515',
-};
+/**
+ * Parse Brightcove embed URL to extract account, player, and video IDs.
+ * Expected format: https://players.brightcove.net/{account}/{player}_default/index.html?videoId={video}
+ */
+function parseBrightcoveUrl(url) {
+  try {
+    const u = new URL(url);
+    const parts = u.pathname.split('/').filter(Boolean);
+    // parts: [account, player_default, index.html]
+    const account = parts[0];
+    const player = parts[1]?.replace('_default', '');
+    const video = u.searchParams.get('videoId');
+    if (account && player && video) return { account, player, video };
+  } catch { /* not a valid URL */ }
+  return null;
+}
 
-async function fetchPolicyKey() {
-  const configUrl = `https://players.brightcove.net/${brightcove.account}/${brightcove.player}_default/config.json`;
+async function fetchPolicyKey(account, player) {
+  const configUrl = `https://players.brightcove.net/${account}/${player}_default/config.json`;
   const resp = await fetch(configUrl);
   if (!resp.ok) return null;
   const config = await resp.json();
   return config.video_cloud?.policy_key || null;
 }
 
-async function loadBackgroundVideo(container) {
+async function loadBackgroundVideo(container, { account, player, video }) {
   try {
-    const policyKey = await fetchPolicyKey();
+    const policyKey = await fetchPolicyKey(account, player);
     if (!policyKey) return;
 
     const resp = await fetch(
-      `https://edge.api.brightcove.com/playback/v1/accounts/${brightcove.account}/videos/${brightcove.video}`,
+      `https://edge.api.brightcove.com/playback/v1/accounts/${account}/videos/${video}`,
       { headers: { Accept: `application/json;pk=${policyKey}` } },
     );
     if (!resp.ok) return;
@@ -33,18 +42,18 @@ async function loadBackgroundVideo(container) {
     );
     if (!mp4) return;
 
-    const video = document.createElement('video');
-    video.className = 'hero-video-bg';
-    video.muted = true;
-    video.autoplay = true;
-    video.loop = true;
-    video.playsInline = true;
-    video.setAttribute('playsinline', '');
-    video.poster = data.poster || '';
-    video.src = mp4.src;
+    const vid = document.createElement('video');
+    vid.className = 'hero-video-bg';
+    vid.muted = true;
+    vid.autoplay = true;
+    vid.loop = true;
+    vid.playsInline = true;
+    vid.setAttribute('playsinline', '');
+    vid.poster = data.poster || '';
+    vid.src = mp4.src;
 
-    container.appendChild(video);
-    video.play().catch(() => { /* autoplay blocked — poster image stays visible */ });
+    container.appendChild(vid);
+    vid.play().catch(() => { /* autoplay blocked — poster image stays visible */ });
   } catch {
     // hero video failed to load — poster image stays visible
   }
@@ -55,6 +64,19 @@ export default function decorate(block) {
   const row = block.children[0];
   const cell = row?.children[0];
   if (!cell) return;
+
+  // Extract Brightcove video link from content (if authored)
+  // Convention: a link whose text matches its href is a data URL, not a visible link
+  let bcConfig = null;
+  const videoLink = [...cell.querySelectorAll('a')].find(
+    (a) => a.textContent.trim() === a.getAttribute('href'),
+  );
+  if (videoLink) {
+    bcConfig = parseBrightcoveUrl(videoLink.href);
+    // Remove the data-link paragraph from visible content
+    const linkP = videoLink.closest('p') || videoLink;
+    linkP.remove();
+  }
 
   // Extract the image (first picture/img) for the background layer
   const img = cell.querySelector('img');
@@ -92,9 +114,11 @@ export default function decorate(block) {
   // Insert background before overlay
   block.prepend(bgDiv);
 
-  // Skip video on mobile — autoplay is usually blocked and it adds ~2s to critical path
-  const isDesktop = window.matchMedia('(min-width: 768px)').matches;
-  if (isDesktop) {
-    loadBackgroundVideo(bgInner);
+  // Load background video on desktop if a Brightcove link was authored
+  if (bcConfig) {
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+    if (isDesktop) {
+      loadBackgroundVideo(bgInner, bcConfig);
+    }
   }
 }
