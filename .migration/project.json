@@ -1,4 +1,5 @@
 {
   "type": "da",
-  "contentHostUrl": "content.da.live"
+  "contentHostUrl": "content.da.live",
+  "libraryUrl": "https://main--summit-abn--aemdemos.aem.page/docs/library/blocks.json"
 }
